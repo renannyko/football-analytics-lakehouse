@@ -1,0 +1,23 @@
+resources:
+  pipelines:
+    bronze_pipeline:
+      name: bronze_pipeline_${bundle.target}
+
+      catalog: ${var.catalog}
+      schema: ${var.schema}
+
+      serverless: true
+      channel: CURRENT
+
+      libraries:
+        - file:
+            path: ../pipelines/bronze/01_bronze_competitions.sql
+
+        - file:
+            path: ../pipelines/bronze/02_bronze_matches.sql
+
+        - file:
+            path: ../pipelines/bronze/03_bronze_lineups.sql
+
+        - file:
+            path: ../pipelines/bronze/04_bronze_events.sql

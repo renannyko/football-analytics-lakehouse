@@ -2,10 +2,10 @@ resources:
   jobs:
     statsbomb_ingestion_job:
       name: statsbomb_ingestion_job_${bundle.target}
-      description: "Batch ingestion job for StatsBomb Open Data raw files into Unity Catalog Volumes."
+      description: "Batch ingestion job for selected StatsBomb Open Data raw files into Unity Catalog Volumes."
 
       tasks:
-        - task_key: download_competitions_json
+        - task_key: download_statsbomb_raw_files
           environment_key: default
           spark_python_task:
             python_file: ../src/ingestion/download_statsbomb_data.py
