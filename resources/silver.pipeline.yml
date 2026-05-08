@@ -1,0 +1,23 @@
+resources:
+  pipelines:
+    silver_pipeline:
+      name: silver_pipeline_${bundle.target}
+
+      catalog: ${var.catalog}
+      schema: silver
+
+      serverless: true
+      channel: CURRENT
+
+      libraries:
+        - file:
+            path: ../pipelines/silver/01_silver_competitions.sql
+
+        - file:
+            path: ../pipelines/silver/02_silver_matches.sql
+
+        - file:
+            path: ../pipelines/silver/03_silver_lineups.sql
+
+        - file:
+            path: ../pipelines/silver/04_silver_events.sql
