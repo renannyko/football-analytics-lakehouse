@@ -1,15 +1,52 @@
+# =============================================================================
+# Silver Pipeline Definition
+# =============================================================================
+#
+# Description:
+#   Declarative serverless pipeline responsible for orchestrating all Silver
+#   layer transformations of the Football Analytics Lakehouse project.
+#
+#   This pipeline includes:
+#   - core Silver normalization tables
+#   - specialized event-level analytical tables
+#   - event semantic modeling
+#   - flattening and standardization logic
+#
+# Project:
+#   Football Analytics Lakehouse
+#
+# Layer:
+#   Silver
+#
+# Architecture:
+#   Bronze Streaming Tables
+#       -> Silver Streaming Tables
+#       -> Gold Analytical Models
+# =============================================================================
+
 resources:
   pipelines:
     silver_pipeline:
       name: silver_pipeline_${bundle.target}
 
+      # Target catalog used by the Silver layer
       catalog: ${var.catalog}
+
+      # Target schema for Silver standardized datasets
       schema: silver
 
+      # Serverless execution mode
       serverless: true
+
+      # Use CURRENT channel for stable runtime compatibility
       channel: CURRENT
 
       libraries:
+
+        # ---------------------------------------------------------------------
+        # Core Silver normalization tables
+        # ---------------------------------------------------------------------
+
         - file:
             path: ../pipelines/silver/01_silver_competitions.sql
 
@@ -21,3 +58,37 @@ resources:
 
         - file:
             path: ../pipelines/silver/04_silver_events.sql
+
+        # ---------------------------------------------------------------------
+        # Specialized event analytical tables
+        # ---------------------------------------------------------------------
+
+        - file:
+            path: ../pipelines/silver/05_silver_shots.sql
+
+        - file:
+            path: ../pipelines/silver/06_silver_passes.sql
+
+        - file:
+            path: ../pipelines/silver/07_silver_carries.sql
+
+        - file:
+            path: ../pipelines/silver/08_silver_event_related_events.sql
+
+        - file:
+            path: ../pipelines/silver/09_silver_pressures.sql
+
+        - file:
+            path: ../pipelines/silver/10_silver_duels.sql
+
+        - file:
+            path: ../pipelines/silver/11_silver_dribbles.sql
+
+        - file:
+            path: ../pipelines/silver/12_silver_fouls.sql
+
+        - file:
+            path: ../pipelines/silver/13_silver_goalkeeper_actions.sql
+
+        - file:
+            path: ../pipelines/silver/14_silver_substitutions.sql

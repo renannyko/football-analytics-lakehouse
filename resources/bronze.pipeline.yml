@@ -1,15 +1,54 @@
+# =============================================================================
+# Bronze Pipeline Definition
+# =============================================================================
+#
+# Description:
+#   Declarative serverless pipeline responsible for orchestrating all Bronze
+#   layer ingestion tables of the Football Analytics Lakehouse project.
+#
+#   This pipeline includes:
+#   - raw ingestion tables
+#   - semi-structured JSON ingestion
+#   - metadata enrichment
+#   - streaming ingestion patterns
+#   - foundational medallion architecture datasets
+#
+# Project:
+#   Football Analytics Lakehouse
+#
+# Layer:
+#   Bronze
+#
+# Architecture:
+#   GitHub Raw Files
+#       -> Unity Catalog Volumes
+#       -> Bronze Streaming Tables
+#       -> Silver Standardized Models
+# =============================================================================
+
 resources:
   pipelines:
     bronze_pipeline:
       name: bronze_pipeline_${bundle.target}
 
+      # Target catalog used by the Bronze layer
       catalog: ${var.catalog}
+
+      # Target schema for raw ingestion datasets
       schema: ${var.schema}
 
+      # Serverless execution mode
       serverless: true
+
+      # Use CURRENT channel for stable runtime compatibility
       channel: CURRENT
 
       libraries:
+
+        # ---------------------------------------------------------------------
+        # Core raw ingestion tables
+        # ---------------------------------------------------------------------
+
         - file:
             path: ../pipelines/bronze/01_bronze_competitions.sql
 

@@ -1,16 +1,71 @@
+# =============================================================================
+# StatsBomb Ingestion Job Definition
+# =============================================================================
+#
+# Description:
+#   Declarative batch ingestion job responsible for downloading selected
+#   StatsBomb Open Data raw JSON files into Unity Catalog Volumes.
+#
+#   This job demonstrates:
+#   - serverless Python execution
+#   - controlled batch ingestion
+#   - idempotent ingestion patterns
+#   - external public data ingestion
+#   - Bronze landing zone orchestration
+#
+# Project:
+#   Football Analytics Lakehouse
+#
+# Layer:
+#   Bronze Ingestion
+#
+# Source:
+#   StatsBomb Open Data
+#
+# Architecture:
+#   GitHub Raw Files
+#       -> Python Ingestion Utility
+#       -> Unity Catalog Volumes
+#       -> Bronze Streaming Tables
+# =============================================================================
+
 resources:
   jobs:
     statsbomb_ingestion_job:
       name: statsbomb_ingestion_job_${bundle.target}
-      description: "Batch ingestion job for selected StatsBomb Open Data raw files into Unity Catalog Volumes."
+
+      description: >
+        Batch ingestion job responsible for downloading selected StatsBomb
+        Open Data raw JSON files into Unity Catalog Volumes.
+
+      # -----------------------------------------------------------------------
+      # Job tasks
+      # -----------------------------------------------------------------------
 
       tasks:
+
+        # ---------------------------------------------------------------------
+        # Raw StatsBomb file ingestion task
+        # ---------------------------------------------------------------------
+
         - task_key: download_statsbomb_raw_files
+
+          # Serverless execution environment reference
           environment_key: default
+
+          # Python ingestion script
           spark_python_task:
             python_file: ../src/ingestion/download_statsbomb_data.py
 
+      # -----------------------------------------------------------------------
+      # Serverless execution environments
+      # -----------------------------------------------------------------------
+
       environments:
+
         - environment_key: default
+
           spec:
+
+            # Databricks serverless environment runtime version
             environment_version: "2"
