@@ -3,6 +3,7 @@ COMMENT "Bronze streaming table containing raw StatsBomb event-level data for th
 AS
 
 SELECT
+    3869685 AS match_id,
     id AS event_id,
     index AS event_index,
     period,

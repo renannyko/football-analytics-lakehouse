@@ -47,6 +47,7 @@ AS
 
 SELECT
     -- Parent event identifiers
+    match_id,
     event_id,
     event_index,
 

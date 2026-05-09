@@ -61,6 +61,7 @@ AS
 
 SELECT
     -- Event identifiers
+    match_id,
     event_id,
     event_index,
 

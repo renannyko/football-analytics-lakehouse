@@ -1,0 +1,124 @@
+# =============================================================================
+# Gold Pipeline Definition
+# =============================================================================
+#
+# Description:
+#   Declarative serverless pipeline responsible for orchestrating all Gold
+#   analytical models of the Football Analytics Lakehouse project.
+#
+#   This pipeline includes:
+#   - business-ready KPI models
+#   - Power BI serving datasets
+#   - match, team, player, and shot-level analytical summaries
+#
+# Project:
+#   Football Analytics Lakehouse
+#
+# Layer:
+#   Gold
+#
+# Architecture:
+#   Silver Standardized Tables
+#       -> Gold Materialized Views
+#       -> Power BI / Future ML Consumption
+# =============================================================================
+
+resources:
+  pipelines:
+    gold_pipeline:
+      name: gold_pipeline_${bundle.target}
+
+      # Target catalog used by the Gold layer
+      catalog: ${var.catalog}
+
+      # Target schema for analytical serving datasets
+      schema: gold
+
+      # Serverless execution mode
+      serverless: true
+
+      # Use CURRENT channel for stable runtime compatibility
+      channel: CURRENT
+
+      libraries:
+
+        # ---------------------------------------------------------------------
+        # Core Gold analytical serving models
+        # ---------------------------------------------------------------------
+
+        - file:
+            path: ../pipelines/gold/01_gold_match_summary.sql
+
+        - file:
+            path: ../pipelines/gold/02_gold_team_match_stats.sql
+
+        - file:
+            path: ../pipelines/gold/03_gold_player_match_stats.sql
+
+        - file:
+            path: ../pipelines/gold/04_gold_shot_summary.sql
+
+        # ---------------------------------------------------------------------
+        # Match analytical models
+        # ---------------------------------------------------------------------
+
+        - file:
+            path: ../pipelines/gold/05_gold_match_timeline.sql
+
+        - file:
+            path: ../pipelines/gold/06_gold_match_momentum.sql
+
+        # ---------------------------------------------------------------------
+        # Team analytical models
+        # ---------------------------------------------------------------------
+
+        - file:
+            path: ../pipelines/gold/07_gold_team_season_stats.sql
+
+        - file:
+            path: ../pipelines/gold/08_gold_team_offensive_metrics.sql
+
+        - file:
+            path: ../pipelines/gold/09_gold_team_defensive_metrics.sql
+
+        # ---------------------------------------------------------------------
+        # Player analytical models
+        # ---------------------------------------------------------------------
+
+        - file:
+            path: ../pipelines/gold/10_gold_player_season_stats.sql
+
+        - file:
+            path: ../pipelines/gold/11_gold_player_offensive_metrics.sql
+
+        - file:
+            path: ../pipelines/gold/12_gold_player_defensive_metrics.sql
+
+        # ---------------------------------------------------------------------
+        # Tactical analytical models
+        # ---------------------------------------------------------------------
+
+        - file:
+            path: ../pipelines/gold/13_gold_passing_network.sql
+
+        - file:
+            path: ../pipelines/gold/14_gold_pressure_zones.sql
+
+        - file:
+            path: ../pipelines/gold/15_gold_shot_zones.sql
+
+        - file:
+            path: ../pipelines/gold/16_gold_possession_sequences.sql
+
+        # ---------------------------------------------------------------------
+        # Machine Learning feature engineering models
+        # ---------------------------------------------------------------------
+
+        - file:
+            path: ../pipelines/gold/17_gold_expected_goals_features.sql
+
+        - file:
+            path: ../pipelines/gold/18_gold_match_features_ml.sql
+
+        - file:
+            path: ../pipelines/gold/19_gold_player_features_ml.sql
