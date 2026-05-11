@@ -7,19 +7,10 @@ Description:
     Gold materialized view responsible for creating time-window based match
     momentum indicators for tactical and dashboard analysis.
 
-    This model consolidates event activity into minute windows and measures:
-    - shots
-    - passes
-    - carries
-    - pressures
-    - duels
-    - attacking and defensive activity indicators
-
-    This dataset is optimized for:
-    - Power BI momentum charts
-    - match flow analysis
-    - tactical storytelling
-    - time-window performance comparison
+    The correct grain of this model is:
+    - one match
+    - one team
+    - one five-minute window
 
 Project:
     Football Analytics Lakehouse
@@ -29,6 +20,7 @@ Layer:
 
 Source:
     football_dev.silver.events
+    football_dev.silver.matches
 
 Architecture:
     Silver Events
@@ -46,27 +38,30 @@ AS
 WITH event_windows AS (
 
     SELECT
+        -- Match identifiers
+        e.match_id,
+
         -- Time window definition
-        FLOOR(minute / 5) * 5 AS minute_window_start,
-        FLOOR(minute / 5) * 5 + 4 AS minute_window_end,
+        FLOOR(e.minute / 5) * 5 AS minute_window_start,
+        FLOOR(e.minute / 5) * 5 + 4 AS minute_window_end,
 
         -- Team context
-        team_id,
-        team_name,
+        e.team_id,
+        e.team_name,
 
         -- Event counters
         COUNT(*) AS total_events,
 
-        SUM(CASE WHEN event_type_name = 'Shot' THEN 1 ELSE 0 END) AS total_shots,
-        SUM(CASE WHEN event_type_name = 'Pass' THEN 1 ELSE 0 END) AS total_passes,
-        SUM(CASE WHEN event_type_name = 'Carry' THEN 1 ELSE 0 END) AS total_carries,
-        SUM(CASE WHEN event_type_name = 'Pressure' THEN 1 ELSE 0 END) AS total_pressures,
-        SUM(CASE WHEN event_type_name = 'Duel' THEN 1 ELSE 0 END) AS total_duels,
+        SUM(CASE WHEN e.event_type_name = 'Shot' THEN 1 ELSE 0 END) AS total_shots,
+        SUM(CASE WHEN e.event_type_name = 'Pass' THEN 1 ELSE 0 END) AS total_passes,
+        SUM(CASE WHEN e.event_type_name = 'Carry' THEN 1 ELSE 0 END) AS total_carries,
+        SUM(CASE WHEN e.event_type_name = 'Pressure' THEN 1 ELSE 0 END) AS total_pressures,
+        SUM(CASE WHEN e.event_type_name = 'Duel' THEN 1 ELSE 0 END) AS total_duels,
 
         -- Activity indicators
         SUM(
             CASE
-                WHEN event_type_name IN ('Shot', 'Pass', 'Carry', 'Dribble')
+                WHEN e.event_type_name IN ('Shot', 'Pass', 'Carry', 'Dribble')
                     THEN 1
                 ELSE 0
             END
@@ -74,54 +69,66 @@ WITH event_windows AS (
 
         SUM(
             CASE
-                WHEN event_type_name IN ('Pressure', 'Duel', 'Foul Committed')
+                WHEN e.event_type_name IN ('Pressure', 'Duel', 'Foul Committed')
                     THEN 1
                 ELSE 0
             END
         ) AS defensive_activity
 
-    FROM football_dev.silver.events
+    FROM football_dev.silver.events e
 
-    WHERE team_id IS NOT NULL
+    WHERE e.team_id IS NOT NULL
 
     GROUP BY
-        FLOOR(minute / 5) * 5,
-        FLOOR(minute / 5) * 5 + 4,
-        team_id,
-        team_name
+        e.match_id,
+        FLOOR(e.minute / 5) * 5,
+        FLOOR(e.minute / 5) * 5 + 4,
+        e.team_id,
+        e.team_name
 )
 
 SELECT
+    -- Match identifiers
+    ew.match_id,
+
+    -- Competition context
+    m.competition_name,
+    m.season_name,
+    m.match_date,
+
     -- Time window
-    minute_window_start,
-    minute_window_end,
+    ew.minute_window_start,
+    ew.minute_window_end,
 
     CONCAT(
-        CAST(minute_window_start AS STRING),
+        CAST(ew.minute_window_start AS STRING),
         '-',
-        CAST(minute_window_end AS STRING),
+        CAST(ew.minute_window_end AS STRING),
         ' min'
     ) AS minute_window_label,
 
     -- Team context
-    team_id,
-    team_name,
+    ew.team_id,
+    ew.team_name,
 
     -- Event volume
-    total_events,
-    total_shots,
-    total_passes,
-    total_carries,
-    total_pressures,
-    total_duels,
+    ew.total_events,
+    ew.total_shots,
+    ew.total_passes,
+    ew.total_carries,
+    ew.total_pressures,
+    ew.total_duels,
 
     -- Momentum indicators
-    attacking_activity,
-    defensive_activity,
+    ew.attacking_activity,
+    ew.defensive_activity,
 
-    attacking_activity - defensive_activity AS net_activity_balance,
+    ew.attacking_activity - ew.defensive_activity AS net_activity_balance,
 
     -- Technical metadata
     CURRENT_TIMESTAMP() AS gold_generated_timestamp
 
-FROM event_windows;
+FROM event_windows ew
+
+LEFT JOIN football_dev.silver.matches m
+    ON ew.match_id = m.match_id;

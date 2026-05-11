@@ -17,11 +17,11 @@ Layer:
 Source:
     StatsBomb Open Data
 
-Initial Scope:
+Scope:
     FIFA World Cup 2022
-    Final Match: Argentina vs France
 """
 
+import json
 from pathlib import Path
 from urllib.request import urlretrieve
 
@@ -46,30 +46,75 @@ VOLUME_PATH = "/Volumes/football_dev/bronze/raw_files/statsbomb"
 SELECTED_COMPETITION_ID = 43
 SELECTED_SEASON_ID = 106
 
-# Match selected for the first controlled ingestion batch:
-# FIFA World Cup 2022 Final — Argentina vs France.
-SELECTED_MATCH_IDS = [
-    3869685,
-]
-
 
 # -----------------------------------------------------------------------------
-# File manifest
+# Manifest builders
 # -----------------------------------------------------------------------------
 
-# Base entities required to start the Bronze layer.
-FILES_TO_DOWNLOAD = {
-    "competitions": f"{BASE_URL}/competitions.json",
-    f"matches_{SELECTED_COMPETITION_ID}_{SELECTED_SEASON_ID}": (
-        f"{BASE_URL}/matches/{SELECTED_COMPETITION_ID}/{SELECTED_SEASON_ID}.json"
-    ),
-}
+def build_base_manifest() -> dict[str, str]:
+    """
+    Builds the base file manifest required for the Bronze layer.
 
-# Match-level entities. These files are generated dynamically based on the
-# selected match IDs to keep the ingestion scope controlled in Databricks Free.
-for match_id in SELECTED_MATCH_IDS:
-    FILES_TO_DOWNLOAD[f"events_{match_id}"] = f"{BASE_URL}/events/{match_id}.json"
-    FILES_TO_DOWNLOAD[f"lineups_{match_id}"] = f"{BASE_URL}/lineups/{match_id}.json"
+    Returns:
+        Dictionary containing logical entity names and source URLs.
+    """
+
+    return {
+        "competitions": f"{BASE_URL}/competitions.json",
+        f"matches_{SELECTED_COMPETITION_ID}_{SELECTED_SEASON_ID}": (
+            f"{BASE_URL}/matches/{SELECTED_COMPETITION_ID}/{SELECTED_SEASON_ID}.json"
+        ),
+    }
+
+
+def get_world_cup_match_ids() -> list[int]:
+    """
+    Reads the downloaded FIFA World Cup 2022 matches file and extracts match IDs.
+
+    This avoids hardcoding individual match IDs and allows the ingestion process
+    to scale automatically to all matches available in the selected competition
+    and season.
+
+    Returns:
+        List of match IDs available in the downloaded matches JSON file.
+    """
+
+    matches_file = Path(
+        f"{VOLUME_PATH}/matches_{SELECTED_COMPETITION_ID}_{SELECTED_SEASON_ID}/"
+        f"matches_{SELECTED_COMPETITION_ID}_{SELECTED_SEASON_ID}.json"
+    )
+
+    if not matches_file.exists():
+        raise FileNotFoundError(
+            f"Matches file not found: {matches_file}. "
+            "Run the base ingestion first to download the matches file."
+        )
+
+    with matches_file.open("r", encoding="utf-8") as file:
+        matches = json.load(file)
+
+    return sorted({int(match["match_id"]) for match in matches})
+
+
+def build_match_level_manifest(match_ids: list[int]) -> dict[str, str]:
+    """
+    Builds the match-level file manifest for events and lineups.
+
+    Args:
+        match_ids:
+            List of match IDs to ingest.
+
+    Returns:
+        Dictionary containing logical entity names and source URLs.
+    """
+
+    manifest = {}
+
+    for match_id in match_ids:
+        manifest[f"events_{match_id}"] = f"{BASE_URL}/events/{match_id}.json"
+        manifest[f"lineups_{match_id}"] = f"{BASE_URL}/lineups/{match_id}.json"
+
+    return manifest
 
 
 # -----------------------------------------------------------------------------
@@ -116,10 +161,21 @@ def main() -> None:
     """
     Main orchestration function.
 
-    Iterates through all configured source entities and triggers ingestion.
+    Downloads base files first, then derives all available match IDs from the
+    matches file and downloads events and lineups for each match.
     """
 
-    for entity_name, source_url in FILES_TO_DOWNLOAD.items():
+    # Download competition and match metadata first.
+    base_manifest = build_base_manifest()
+
+    for entity_name, source_url in base_manifest.items():
+        download_file(entity_name, source_url)
+
+    # Build match-level manifest dynamically from the downloaded matches file.
+    match_ids = get_world_cup_match_ids()
+    match_level_manifest = build_match_level_manifest(match_ids)
+
+    for entity_name, source_url in match_level_manifest.items():
         download_file(entity_name, source_url)
 
 

@@ -1,42 +1,95 @@
+/*
+===============================================================================
+Bronze Events Pipeline
+===============================================================================
+
+Description:
+    Bronze streaming table responsible for ingesting StatsBomb event-level JSON
+    files for all selected FIFA World Cup 2022 matches.
+
+    This table preserves semi-structured event payloads and enriches each row
+    with operational metadata required for downstream Silver and Gold models.
+
+Project:
+    Football Analytics Lakehouse
+
+Layer:
+    Bronze
+
+Source:
+    StatsBomb Open Data
+
+Architecture:
+    Unity Catalog Volume
+        -> Bronze Streaming Table
+        -> Silver Event Standardization
+        -> Gold Analytical Models
+===============================================================================
+*/
+
 CREATE OR REFRESH STREAMING TABLE raw_events
-COMMENT "Bronze streaming table containing raw StatsBomb event-level data for the selected match scope."
+
+COMMENT "Bronze streaming table containing raw StatsBomb event-level data for selected match files."
+
 AS
 
 SELECT
-    3869685 AS match_id,
+    -- Match identifier extracted from the source file path.
+    -- Example path:
+    -- /Volumes/football_dev/bronze/raw_files/statsbomb/events_3869685/events_3869685.json
+    CAST(
+    regexp_extract(
+        _metadata.file_path,
+        'events_([0-9]+)\\.json',
+        1
+    ) AS INT
+)   AS match_id,
+
+    -- Event identifiers
     id AS event_id,
     index AS event_index,
+
+    -- Match timing
     period,
     timestamp AS event_timestamp,
     minute,
     second,
 
+    -- Event classification
     type.id AS event_type_id,
     type.name AS event_type_name,
 
+    -- Possession context
     possession,
     possession_team.id AS possession_team_id,
     possession_team.name AS possession_team_name,
 
+    -- Play pattern context
     play_pattern.id AS play_pattern_id,
     play_pattern.name AS play_pattern_name,
 
+    -- Team attributes
     team.id AS team_id,
     team.name AS team_name,
 
+    -- Player attributes
     player.id AS player_id,
     player.name AS player_name,
 
+    -- Player position
     position.id AS position_id,
     position.name AS position_name,
 
+    -- Event location
     location,
 
+    -- Event metadata
     duration,
     under_pressure,
     off_camera,
     out,
 
+    -- Raw event-type payloads preserved as strings for downstream parsing
     pass,
     shot,
     carry,
@@ -53,13 +106,14 @@ SELECT
     tactics,
     related_events,
 
+    -- Technical metadata
     'statsbomb' AS source_system,
     'events' AS source_entity,
     current_timestamp() AS ingestion_timestamp,
     _metadata.file_path AS source_file
 
 FROM STREAM read_files(
-    '/Volumes/football_dev/bronze/raw_files/statsbomb/events_3869685/',
+    '/Volumes/football_dev/bronze/raw_files/statsbomb/events_*/*.json',
     format => 'json',
     schema => '
         id STRING,

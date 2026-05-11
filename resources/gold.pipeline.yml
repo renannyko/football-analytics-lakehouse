@@ -122,3 +122,16 @@ resources:
 
         - file:
             path: ../pipelines/gold/19_gold_player_features_ml.sql
+
+        # ---------------------------------------------------------------------
+        # Semantic model dimensions
+        # ---------------------------------------------------------------------
+
+        - file:
+            path: ../pipelines/gold/20_gold_dim_team.sql
+
+        - file:
+            path: ../pipelines/gold/21_gold_dim_player.sql
+
+        - file:
+            path: ../pipelines/gold/22_gold_dim_match.sql
