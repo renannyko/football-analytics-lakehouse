@@ -7,6 +7,12 @@ Description:
     Gold materialized view responsible for aggregating shot spatial
     distributions for offensive and tactical analysis.
 
+    The correct grain of this model is:
+    - one match
+    - one team
+    - one player
+    - one shot zone
+
 Project:
     Football Analytics Lakehouse
 
@@ -32,6 +38,9 @@ AS
 WITH parsed_shots AS (
 
     SELECT
+        -- Match identifiers
+        match_id,
+
         -- Team attributes
         team_id,
         team_name,
@@ -54,11 +63,15 @@ WITH parsed_shots AS (
     FROM football_dev.silver.shots
 
     WHERE
-        shot_location_x IS NOT NULL
+        match_id IS NOT NULL
+        AND shot_location_x IS NOT NULL
         AND shot_location_y IS NOT NULL
 )
 
 SELECT
+    -- Match identifiers
+    match_id,
+
     -- Team attributes
     team_id,
     team_name,
@@ -111,6 +124,7 @@ SELECT
 FROM parsed_shots
 
 GROUP BY
+    match_id,
     team_id,
     team_name,
     player_id,
