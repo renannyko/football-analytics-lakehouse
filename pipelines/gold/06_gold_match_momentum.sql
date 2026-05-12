@@ -90,6 +90,12 @@ WITH event_windows AS (
 SELECT
     -- Match identifiers
     ew.match_id,
+    
+    CONCAT(
+    CAST(ew.match_id AS STRING),
+    '_',
+    CAST(ew.minute_window_start AS STRING)
+    ) AS match_time_window_key,
 
     -- Competition context
     m.competition_name,

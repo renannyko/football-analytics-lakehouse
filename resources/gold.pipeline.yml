@@ -110,6 +110,9 @@ resources:
         - file:
             path: ../pipelines/gold/16_gold_possession_sequences.sql
 
+        - file:
+            path: ../pipelines/gold/24_gold_shot_events.sql
+
         # ---------------------------------------------------------------------
         # Machine Learning feature engineering models
         # ---------------------------------------------------------------------
@@ -135,3 +138,6 @@ resources:
 
         - file:
             path: ../pipelines/gold/22_gold_dim_match.sql
+
+        - file:
+            path: ../pipelines/gold/25_gold_dim_match_time_window.sql
