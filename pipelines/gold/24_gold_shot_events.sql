@@ -119,6 +119,32 @@ SELECT
         1
     ) AS shot_outcome,
 
+    CASE
+        WHEN LOWER(
+            regexp_extract(
+                shot_payload,
+                '"outcome"\\s*:\\s*\\{[^}]*"name"\\s*:\\s*"([^"]+)"',
+                1
+            )
+        ) = 'goal'
+            THEN 'Goal'
+
+        WHEN LOWER(
+            regexp_extract(
+                shot_payload,
+                '"outcome"\\s*:\\s*\\{[^}]*"name"\\s*:\\s*"([^"]+)"',
+                1
+            )
+        ) IN (
+            'saved',
+            'saved to post',
+            'saved off target'
+        )
+            THEN 'Saved'
+
+        ELSE 'Off Target'
+    END AS shot_result_category,
+
     CAST(
         regexp_extract(
             shot_payload,

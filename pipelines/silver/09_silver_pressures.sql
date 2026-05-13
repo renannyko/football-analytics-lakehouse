@@ -7,13 +7,6 @@ Description:
     Silver streaming table responsible for extracting and standardizing
     pressure events from the general Silver events table.
 
-    This table provides a specialized analytical model for:
-    - defensive intensity analysis
-    - pressing behavior
-    - off-ball defensive actions
-    - team pressure metrics
-    - future Gold KPIs and ML features
-
 Project:
     Football Analytics Lakehouse
 
@@ -88,9 +81,11 @@ SELECT
     location_x AS pressure_location_x,
     location_y AS pressure_location_y,
 
+    -- Pressure contextual attributes
+    under_pressure,
+
     -- Event context
     duration,
-    under_pressure,
 
     -- Technical metadata
     source_system,
