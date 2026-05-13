@@ -7,6 +7,13 @@ Description:
     Gold materialized view responsible for aggregating pressure event spatial
     distributions for tactical and defensive analysis.
 
+    The correct grain of this model is:
+    - one match
+    - one five-minute time window
+    - one team
+    - one player
+    - one pressure zone
+
     This model consolidates:
     - pressure locations
     - defensive pressure density
@@ -41,7 +48,64 @@ COMMENT "Gold analytical model containing spatial pressure event distributions."
 
 AS
 
+WITH pressure_base AS (
+
+    SELECT
+        -- Match identifiers
+        match_id,
+
+        -- Shared temporal semantic key
+        CONCAT(
+            CAST(match_id AS STRING),
+            '_',
+            CAST(FLOOR(minute / 5) * 5 AS STRING)
+        ) AS match_time_window_key,
+
+        -- Match timing
+        FLOOR(minute / 5) * 5 AS minute_window_start,
+        FLOOR(minute / 5) * 5 + 4 AS minute_window_end,
+
+        CONCAT(
+            CAST(FLOOR(minute / 5) * 5 AS STRING),
+            '-',
+            CAST(FLOOR(minute / 5) * 5 + 4 AS STRING),
+            ' min'
+        ) AS minute_window_label,
+
+        -- Team attributes
+        team_id,
+        team_name,
+
+        -- Player attributes
+        player_id,
+        player_name,
+
+        -- Pressure coordinates
+        pressure_location_x,
+        pressure_location_y,
+
+        -- Spatial bucketing
+        FLOOR(pressure_location_x / 10) * 10 AS pressure_zone_x,
+        FLOOR(pressure_location_y / 10) * 10 AS pressure_zone_y
+
+    FROM football_dev.silver.pressures
+
+    WHERE
+        match_id IS NOT NULL
+        AND pressure_location_x IS NOT NULL
+        AND pressure_location_y IS NOT NULL
+)
+
 SELECT
+    -- Match identifiers
+    match_id,
+    match_time_window_key,
+
+    -- Match timing
+    minute_window_start,
+    minute_window_end,
+    minute_window_label,
+
     -- Team attributes
     team_id,
     team_name,
@@ -51,8 +115,8 @@ SELECT
     player_name,
 
     -- Spatial bucketing
-    FLOOR(pressure_location_x / 10) * 10 AS pressure_zone_x,
-    FLOOR(pressure_location_y / 10) * 10 AS pressure_zone_y,
+    pressure_zone_x,
+    pressure_zone_y,
 
     -- Pressure metrics
     COUNT(*) AS total_pressures,
@@ -71,16 +135,17 @@ SELECT
     -- Technical metadata
     CURRENT_TIMESTAMP() AS gold_generated_timestamp
 
-FROM football_dev.silver.pressures
-
-WHERE
-    pressure_location_x IS NOT NULL
-    AND pressure_location_y IS NOT NULL
+FROM pressure_base
 
 GROUP BY
+    match_id,
+    match_time_window_key,
+    minute_window_start,
+    minute_window_end,
+    minute_window_label,
     team_id,
     team_name,
     player_id,
     player_name,
-    FLOOR(pressure_location_x / 10) * 10,
-    FLOOR(pressure_location_y / 10) * 10;
+    pressure_zone_x,
+    pressure_zone_y;
