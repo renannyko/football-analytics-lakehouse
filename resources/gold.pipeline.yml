@@ -32,7 +32,7 @@ resources:
       catalog: ${var.catalog}
 
       # Target schema for analytical serving datasets
-      schema: gold
+      schema: ${var.gold_schema}
 
       # Serverless execution mode
       serverless: true

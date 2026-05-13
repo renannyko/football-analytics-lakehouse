@@ -33,7 +33,7 @@ resources:
       catalog: ${var.catalog}
 
       # Target schema for Silver standardized datasets
-      schema: silver
+      schema: ${var.silver_schema}
 
       # Serverless execution mode
       serverless: true

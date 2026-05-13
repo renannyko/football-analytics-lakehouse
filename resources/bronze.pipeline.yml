@@ -35,7 +35,7 @@ resources:
       catalog: ${var.catalog}
 
       # Target schema for raw ingestion datasets
-      schema: ${var.schema}
+      schema: ${var.bronze_schema}
 
       # Serverless execution mode
       serverless: true

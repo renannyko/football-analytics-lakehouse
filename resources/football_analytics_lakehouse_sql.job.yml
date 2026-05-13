@@ -3,104 +3,45 @@
 # =============================================================================
 #
 # Description:
-#   Declarative SQL job responsible for orchestrating scheduled SQL workloads
-#   within the Football Analytics Lakehouse project.
+#   Declarative SQL job reserved for future SQL Warehouse workloads within the
+#   Football Analytics Lakehouse project.
 #
-#   This job demonstrates:
-#   - SQL warehouse orchestration
-#   - scheduled execution patterns
-#   - task dependency management
-#   - parameterized SQL execution
-#   - failure notification handling
+#   This job can be used later for:
+#   - SQL-based validation queries
+#   - downstream serving layer refreshes
+#   - lightweight data quality checks
+#   - analytical maintenance tasks
 #
 # Project:
 #   Football Analytics Lakehouse
 #
-# Purpose:
-#   Example SQL orchestration workflow for future analytical processing,
-#   KPI generation, and downstream serving layer automation.
-#
 # Architecture:
 #   SQL Warehouse
-#       -> SQL Tasks
-#       -> Scheduled Transformations
-#       -> Future Gold Serving Layer
+#       -> Future SQL Tasks
+#       -> Analytical / Governance Workloads
 # =============================================================================
 
 resources:
   jobs:
     football_analytics_lakehouse_sql_job:
-      name: football_analytics_lakehouse_sql_job
-
-      # -----------------------------------------------------------------------
-      # Job scheduling configuration
-      # -----------------------------------------------------------------------
-
-      trigger:
-
-        # Run this job once per day.
-        # The next execution occurs exactly one day after the previous run.
-        periodic:
-          interval: 1
-          unit: DAYS
-
-      # -----------------------------------------------------------------------
-      # Notification configuration
-      # -----------------------------------------------------------------------
+      name: football_analytics_lakehouse_sql_job_${bundle.target}
 
       email_notifications:
-
-        # Send email notification if the job fails.
         on_failure:
           - renannyko@gmail.com
 
-      # -----------------------------------------------------------------------
-      # Runtime parameters
-      # -----------------------------------------------------------------------
-
       parameters:
-
-        # Target Unity Catalog catalog
         - name: catalog
           default: ${var.catalog}
 
-        # Target schema
-        - name: schema
-          default: ${var.schema}
+        - name: bronze_schema
+          default: ${var.bronze_schema}
 
-        # Active Databricks Asset Bundle target
+        - name: silver_schema
+          default: ${var.silver_schema}
+
+        - name: gold_schema
+          default: ${var.gold_schema}
+
         - name: bundle_target
           default: ${bundle.target}
-
-      # -----------------------------------------------------------------------
-      # SQL workflow tasks
-      # -----------------------------------------------------------------------
-
-      tasks:
-
-        # ---------------------------------------------------------------------
-        # Raw orders ingestion task
-        # ---------------------------------------------------------------------
-
-        - task_key: orders_raw
-
-          sql_task:
-            warehouse_id: ${var.warehouse_id}
-
-            file:
-              path: ../src/orders_raw.sql
-
-        # ---------------------------------------------------------------------
-        # Daily orders aggregation task
-        # ---------------------------------------------------------------------
-
-        - task_key: orders_daily
-
-          depends_on:
-            - task_key: orders_raw
-
-          sql_task:
-            warehouse_id: ${var.warehouse_id}
-
-            file:
-              path: ../src/orders_daily.sql
