@@ -31,7 +31,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW match_momentum
 
-COMMENT "Gold analytical model containing time-window based match momentum indicators."
+COMMENT "Gold analytical model containing time-window based match momentum indicators, event volume, attacking activity, defensive activity, and net activity balance by match, team, and five-minute window."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'match_momentum',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides five-minute match momentum indicators for tactical storytelling and Power BI dashboard analysis.'
+)
 
 AS
 
@@ -90,11 +100,11 @@ WITH event_windows AS (
 SELECT
     -- Match identifiers
     ew.match_id,
-    
+
     CONCAT(
-    CAST(ew.match_id AS STRING),
-    '_',
-    CAST(ew.minute_window_start AS STRING)
+        CAST(ew.match_id AS STRING),
+        '_',
+        CAST(ew.minute_window_start AS STRING)
     ) AS match_time_window_key,
 
     -- Competition context

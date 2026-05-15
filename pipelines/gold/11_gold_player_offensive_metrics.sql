@@ -42,7 +42,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW player_offensive_metrics
 
-COMMENT "Gold analytical model containing offensive player-level KPIs."
+COMMENT "Gold analytical model containing offensive player-level KPIs, including shots, passes, carries, dribbles, and offensive involvement score."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'player_offensive_analytics',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides offensive player-level performance metrics for scouting analysis, attacking comparisons, and Power BI dashboards.'
+)
 
 AS
 
@@ -69,39 +79,45 @@ passes_agg AS (
 
     SELECT
         player_id,
+        team_id,
 
         COUNT(*) AS total_passes
 
     FROM football_dev.silver.passes
 
     GROUP BY
-        player_id
+        player_id,
+        team_id
 ),
 
 carries_agg AS (
 
     SELECT
         player_id,
+        team_id,
 
         COUNT(*) AS total_carries
 
     FROM football_dev.silver.carries
 
     GROUP BY
-        player_id
+        player_id,
+        team_id
 ),
 
 dribbles_agg AS (
 
     SELECT
         player_id,
+        team_id,
 
         COUNT(*) AS total_dribbles
 
     FROM football_dev.silver.dribbles
 
     GROUP BY
-        player_id
+        player_id,
+        team_id
 )
 
 SELECT
@@ -134,9 +150,12 @@ FROM shots_agg sa
 
 LEFT JOIN passes_agg pa
     ON sa.player_id = pa.player_id
+   AND sa.team_id = pa.team_id
 
 LEFT JOIN carries_agg ca
     ON sa.player_id = ca.player_id
+   AND sa.team_id = ca.team_id
 
 LEFT JOIN dribbles_agg da
-    ON sa.player_id = da.player_id;
+    ON sa.player_id = da.player_id
+   AND sa.team_id = da.team_id;

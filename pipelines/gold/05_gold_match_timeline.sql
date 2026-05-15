@@ -43,13 +43,26 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW match_timeline
 
-COMMENT "Gold analytical model containing a chronological timeline of relevant match events."
+COMMENT "Gold analytical model containing a chronological timeline of relevant match events for storytelling, tactical analysis, and dashboard exploration."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'match_storytelling',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides chronological match event context for tactical storytelling and Power BI timeline visuals.'
+)
 
 AS
 
 WITH relevant_events AS (
 
     SELECT
+        -- Match identifiers
+        match_id,
+
         -- Event identifiers
         event_id,
         event_index,
@@ -114,12 +127,16 @@ WITH relevant_events AS (
 SELECT
     -- Timeline ordering
     ROW_NUMBER() OVER (
+        PARTITION BY match_id
         ORDER BY
             period,
             minute,
             second,
             event_index
     ) AS timeline_sequence,
+
+    -- Match identifiers
+    match_id,
 
     -- Event identifiers
     event_id,

@@ -34,7 +34,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW dim_player
 
-COMMENT "Gold dimension containing unique football players for semantic modeling."
+COMMENT "Gold dimension containing unique football players for semantic modeling, scouting analytics, reusable filtering, and Power BI star schema relationships."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'semantic_dimensions',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides a reusable player dimension for semantic modeling, scouting analytics, Power BI filtering, and star schema relationships.'
+)
 
 AS
 

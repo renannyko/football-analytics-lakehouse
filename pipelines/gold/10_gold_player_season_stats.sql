@@ -38,7 +38,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW player_season_stats
 
-COMMENT "Gold analytical model containing season-level player performance KPIs."
+COMMENT "Gold analytical model containing season-level player performance KPIs, including match participation, offensive actions, defensive actions, total actions, and per-match averages."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'player_season_analytics',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides season-level player performance metrics for ranking dashboards, scouting analysis, and Power BI reporting.'
+)
 
 AS
 

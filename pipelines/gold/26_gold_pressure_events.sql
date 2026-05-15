@@ -31,7 +31,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW pressure_events
 
-COMMENT "Gold analytical model containing pressure-level events for tactical defensive analysis."
+COMMENT "Gold analytical model containing pressure-level events for tactical defensive analysis, spatial pressure visualization, and Power BI tactical dashboards."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'pressure_event_analytics',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides event-level pressure data for tactical defensive analysis, pressure heatmaps, temporal filtering, and Power BI dashboards.'
+)
 
 AS
 

@@ -31,7 +31,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW shot_zones
 
-COMMENT "Gold analytical model containing spatial shot event distributions."
+COMMENT "Gold analytical model containing spatial shot event distributions, shot density zones, goal conversion metrics, and average shot coordinates."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'shot_zone_analytics',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides spatial offensive shot density analytics for tactical maps, zone analysis, and Power BI dashboards.'
+)
 
 AS
 

@@ -43,7 +43,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW match_features_ml
 
-COMMENT "Gold analytical model containing match-level ML feature engineering datasets."
+COMMENT "Gold analytical model containing match-level machine learning feature engineering datasets, including offensive metrics, defensive metrics, intensity indicators, and efficiency features."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'match_ml_features',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides engineered match-level features for future machine learning experimentation, tactical modeling, and predictive analytics.'
+)
 
 AS
 

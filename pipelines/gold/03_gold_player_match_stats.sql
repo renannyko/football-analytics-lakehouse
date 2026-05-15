@@ -45,7 +45,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW player_match_stats
 
-COMMENT "Gold analytical model containing player-level match KPIs."
+COMMENT "Gold analytical model containing player-level match KPIs, including offensive actions, defensive actions, total actions, shots, passes, carries, dribbles, pressures, and duels."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'player_analytics',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides player-level match performance metrics for scouting, tactical analysis, and Power BI dashboards.'
+)
 
 AS
 

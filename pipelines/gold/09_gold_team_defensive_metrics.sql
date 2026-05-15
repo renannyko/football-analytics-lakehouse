@@ -43,7 +43,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW team_defensive_metrics
 
-COMMENT "Gold analytical model containing defensive team-level KPIs."
+COMMENT "Gold analytical model containing defensive team-level KPIs, including pressures, duels, fouls, goalkeeper actions, and defensive intensity score."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'team_defensive_analytics',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides team-level defensive performance metrics for tactical analysis, defensive comparisons, and Power BI dashboards.'
+)
 
 AS
 

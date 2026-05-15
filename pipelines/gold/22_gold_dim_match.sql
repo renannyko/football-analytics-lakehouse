@@ -34,7 +34,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW dim_match
 
-COMMENT "Gold dimension containing unique football matches for semantic modeling."
+COMMENT "Gold dimension containing unique football matches for semantic modeling, reusable analytical filtering, and Power BI star schema relationships."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'semantic_dimensions',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides a reusable match dimension for semantic modeling, competition analysis, Power BI filtering, and star schema relationships.'
+)
 
 AS
 

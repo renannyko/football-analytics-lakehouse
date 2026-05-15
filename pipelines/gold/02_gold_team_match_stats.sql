@@ -41,7 +41,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW team_match_stats
 
-COMMENT "Gold analytical model containing team-level match KPIs."
+COMMENT "Gold analytical model containing team-level match KPIs, including goals, shots, passes, goal differential, and match points."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'team_analytics',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides team-level match performance metrics for tactical analysis and Power BI dashboards.'
+)
 
 AS
 

@@ -39,13 +39,26 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW possession_sequences
 
-COMMENT "Gold analytical model containing possession and event sequence relationships."
+COMMENT "Gold analytical model containing possession and event sequence relationships, including event transitions, sequence ordering, possession chains, and tactical flow context."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'possession_sequence_analytics',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides possession chain and event sequence analytics for tactical flow analysis, sequence visualization, and future feature engineering.'
+)
 
 AS
 
 WITH base_sequences AS (
 
     SELECT
+        -- Match identifiers
+        e.match_id,
+
         -- Parent event
         ere.event_id AS parent_event_id,
         ere.related_event_id,
@@ -75,7 +88,7 @@ WITH base_sequences AS (
 
         -- Sequence ordering
         ROW_NUMBER() OVER (
-            PARTITION BY e.possession
+            PARTITION BY e.match_id, e.possession
             ORDER BY
                 ere.period,
                 ere.minute,
@@ -90,6 +103,9 @@ WITH base_sequences AS (
 )
 
 SELECT
+    -- Match identifiers
+    match_id,
+
     -- Possession identifiers
     possession,
     possession_team_id,

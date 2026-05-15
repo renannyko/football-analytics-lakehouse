@@ -39,7 +39,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW team_season_stats
 
-COMMENT "Gold analytical model containing season-level team performance KPIs."
+COMMENT "Gold analytical model containing season-level team performance KPIs, including wins, draws, losses, points, goals, shots, passes, and per-match averages."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'team_season_analytics',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides season-level team performance metrics for ranking tables, executive dashboards, and tactical analysis.'
+)
 
 AS
 

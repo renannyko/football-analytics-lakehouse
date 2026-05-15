@@ -25,7 +25,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW passing_network
 
-COMMENT "Gold analytical model containing player-to-player passing network metrics."
+COMMENT "Gold analytical model containing player-to-player passing network metrics, including passer, recipient, pass volume, and average pass origin location."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'passing_network_analytics',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides player-to-player passing network metrics for tactical analysis, network visualization, and Power BI dashboards.'
+)
 
 AS
 

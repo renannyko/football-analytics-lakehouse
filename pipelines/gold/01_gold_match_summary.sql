@@ -39,7 +39,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW match_summary
 
-COMMENT "Gold analytical model containing match-level summaries and KPIs."
+COMMENT "Gold analytical model containing match-level summaries, match metadata, scorelines, teams, competition context, and executive KPIs."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'match_analytics',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides match-level KPIs and executive overview metrics.'
+)
 
 AS
 

@@ -25,7 +25,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW shot_summary
 
-COMMENT "Gold analytical model containing shot-level summaries and KPIs."
+COMMENT "Gold analytical model containing shot-level summaries, shot outcomes, goal indicators, spatial coordinates, and offensive tactical KPIs."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'shot_analytics',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides shot-level offensive analytics for tactical reporting, Power BI dashboards, and future advanced modeling.'
+)
 
 AS
 

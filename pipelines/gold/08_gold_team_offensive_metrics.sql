@@ -43,7 +43,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW team_offensive_metrics
 
-COMMENT "Gold analytical model containing offensive team-level KPIs."
+COMMENT "Gold analytical model containing offensive team-level KPIs, including shots, passes, carries, dribbles, and offensive intensity score."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'team_offensive_analytics',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides team-level offensive performance metrics for tactical analysis, attacking comparisons, and Power BI dashboards.'
+)
 
 AS
 

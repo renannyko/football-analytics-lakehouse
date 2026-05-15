@@ -44,7 +44,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW pressure_zones
 
-COMMENT "Gold analytical model containing spatial pressure event distributions."
+COMMENT "Gold analytical model containing spatial pressure event distributions, defensive pressure density, pressure zones, and pressing intensity indicators."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'pressure_zone_analytics',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides spatial defensive pressure analytics for tactical heatmaps, pressing analysis, and Power BI dashboards.'
+)
 
 AS
 

@@ -40,7 +40,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW player_features_ml
 
-COMMENT "Gold analytical model containing player-level ML feature engineering datasets."
+COMMENT "Gold analytical model containing player-level machine learning feature engineering datasets, including offensive metrics, defensive metrics, involvement indicators, and scouting-oriented analytical features."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'player_ml_features',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides engineered player-level features for future machine learning experimentation, player clustering, scouting analytics, and predictive modeling.'
+)
 
 AS
 

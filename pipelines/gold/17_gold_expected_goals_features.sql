@@ -25,7 +25,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW expected_goals_features
 
-COMMENT "Gold analytical model containing shot-level ML features for xG modeling."
+COMMENT "Gold analytical model containing shot-level machine learning features for future Expected Goals (xG) modeling and feature engineering workflows."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'expected_goals_features',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides engineered shot-level features for tactical analytics, future xG machine learning models, and advanced feature engineering.'
+)
 
 AS
 

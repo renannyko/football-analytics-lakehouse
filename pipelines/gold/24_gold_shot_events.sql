@@ -31,7 +31,17 @@ Architecture:
 
 CREATE OR REFRESH MATERIALIZED VIEW shot_events
 
-COMMENT "Gold analytical model containing shot-level events for tactical spatial analysis."
+COMMENT "Gold analytical model containing shot-level events for tactical spatial analysis, time-based filtering, xG shot maps, shot result classification, and Power BI spatial storytelling."
+
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'data_product' = 'shot_event_analytics',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides event-level shot data for tactical shot maps, xG visualization, temporal filtering, and Power BI dashboards.'
+)
 
 AS
 
@@ -42,9 +52,9 @@ SELECT
     event_index,
 
     CONCAT(
-    CAST(match_id AS STRING),
-    '_',
-    CAST(FLOOR(minute / 5) * 5 AS STRING)
+        CAST(match_id AS STRING),
+        '_',
+        CAST(FLOOR(minute / 5) * 5 AS STRING)
     ) AS match_time_window_key,
 
     -- Team attributes
