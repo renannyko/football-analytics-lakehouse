@@ -1,0 +1,75 @@
+# =============================================================================
+# GitHub Actions - Databricks CI
+# =============================================================================
+#
+# Description:
+#   Continuous Integration workflow for validating Databricks Asset Bundles.
+#
+# Workflow:
+#   Git Push
+#       -> Checkout Repository
+#       -> Install Databricks CLI
+#       -> Authenticate
+#       -> Validate Bundle
+#
+# Project:
+#   Football Analytics Lakehouse
+# =============================================================================
+
+name: Databricks CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  validate-bundle:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # -----------------------------------------------------------------------
+      # Checkout repository
+      # -----------------------------------------------------------------------
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # -----------------------------------------------------------------------
+      # Install Databricks CLI
+      # -----------------------------------------------------------------------
+
+      - name: Install Databricks CLI
+        uses: databricks/setup-cli@main
+
+      # -----------------------------------------------------------------------
+      # Configure Databricks authentication
+      # -----------------------------------------------------------------------
+
+      - name: Configure Databricks authentication
+        run: |
+          echo "DATABRICKS_HOST=${{ secrets.DATABRICKS_HOST }}" >> $GITHUB_ENV
+          echo "DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN }}" >> $GITHUB_ENV
+
+      # -----------------------------------------------------------------------
+      # Validate DEV bundle
+      # -----------------------------------------------------------------------
+
+      - name: Validate DEV bundle
+        run: |
+          databricks bundle validate -t dev
+
+      # -----------------------------------------------------------------------
+      # Validate PROD bundle
+      # -----------------------------------------------------------------------
+
+      - name: Validate PROD bundle
+        run: |
+          databricks bundle validate -t prod
