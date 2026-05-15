@@ -145,4 +145,18 @@ resources:
         - file:
             path: ../pipelines/gold/25_gold_dim_match_time_window.sql
 
-        
+        # ---------------------------------------------------------------------
+        # Observability and monitoring models
+        # ---------------------------------------------------------------------
+
+        - file:
+            path: ../pipelines/gold/27_gold_pipeline_table_metrics.sql
+
+        - file:
+            path: ../pipelines/gold/28_gold_pipeline_freshness_metrics.sql
+
+        - file:
+            path: ../pipelines/gold/29_gold_pipeline_quality_metrics.sql
+
+        - file:
+            path: ../pipelines/gold/30_gold_pipeline_execution_metrics.sql
