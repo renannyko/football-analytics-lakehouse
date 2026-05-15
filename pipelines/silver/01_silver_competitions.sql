@@ -50,6 +50,17 @@ CREATE OR REFRESH STREAMING TABLE competitions
 
 COMMENT "Silver streaming table containing standardized StatsBomb competition and season data."
 
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'silver',
+    'data_product' = 'standardized_competitions',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'ingestion_type' = 'streaming',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides standardized competition and season metadata for downstream analytical models, governance, and semantic consistency.'
+)
+
 AS
 
 SELECT

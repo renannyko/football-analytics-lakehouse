@@ -47,6 +47,17 @@ CREATE OR REFRESH STREAMING TABLE lineups
 
 COMMENT "Silver streaming table containing standardized player lineup data."
 
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'silver',
+    'data_product' = 'standardized_lineups',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'ingestion_type' = 'streaming',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides standardized player lineup data for downstream player analytics, semantic modeling, and Gold analytical consumption.'
+)
+
 AS
 
 SELECT

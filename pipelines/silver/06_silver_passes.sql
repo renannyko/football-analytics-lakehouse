@@ -52,6 +52,17 @@ CREATE OR REFRESH STREAMING TABLE passes
 
 COMMENT "Silver streaming table containing standardized StatsBomb pass events."
 
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'silver',
+    'data_product' = 'pass_events',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'ingestion_type' = 'streaming',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides standardized pass-level football events for passing analytics, possession analysis, tactical modeling, and downstream Gold KPIs.'
+)
+
 AS
 
 SELECT

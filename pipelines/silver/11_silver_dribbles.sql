@@ -51,6 +51,17 @@ CREATE OR REFRESH STREAMING TABLE dribbles
 
 COMMENT "Silver streaming table containing standardized StatsBomb dribble events."
 
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'silver',
+    'data_product' = 'dribble_events',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'ingestion_type' = 'streaming',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides standardized dribble-level football events for offensive progression analysis, player dribbling analytics, tactical modeling, and downstream Gold KPIs.'
+)
+
 AS
 
 SELECT

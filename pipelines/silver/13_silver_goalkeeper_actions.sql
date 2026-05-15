@@ -51,6 +51,17 @@ CREATE OR REFRESH STREAMING TABLE goalkeeper_actions
 
 COMMENT "Silver streaming table containing standardized StatsBomb goalkeeper-related events."
 
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'silver',
+    'data_product' = 'goalkeeper_events',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'ingestion_type' = 'streaming',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides standardized goalkeeper-related football events for shot-stopping analysis, defensive last-line modeling, goalkeeper analytics, and downstream Gold KPIs.'
+)
+
 AS
 
 SELECT

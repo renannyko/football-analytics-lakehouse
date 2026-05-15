@@ -60,6 +60,17 @@ CREATE OR REFRESH STREAMING TABLE matches
 
 COMMENT "Silver streaming table containing standardized StatsBomb match-level data."
 
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'silver',
+    'data_product' = 'standardized_matches',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'ingestion_type' = 'streaming',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides standardized match-level football data for downstream tactical analytics, semantic modeling, and Gold analytical consumption.'
+)
+
 AS
 
 SELECT

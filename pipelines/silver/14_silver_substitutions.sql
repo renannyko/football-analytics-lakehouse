@@ -51,6 +51,17 @@ CREATE OR REFRESH STREAMING TABLE substitutions
 
 COMMENT "Silver streaming table containing standardized StatsBomb substitution events."
 
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'silver',
+    'data_product' = 'substitution_events',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'ingestion_type' = 'streaming',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides standardized substitution-level football events for tactical game management analysis, squad rotation analytics, and downstream Gold KPIs.'
+)
+
 AS
 
 SELECT

@@ -43,6 +43,17 @@ CREATE OR REFRESH STREAMING TABLE event_related_events
 
 COMMENT "Silver streaming table containing normalized StatsBomb related event relationships."
 
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'silver',
+    'data_product' = 'event_relationships',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'ingestion_type' = 'streaming',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides normalized football event relationship data for sequence analysis, possession flow modeling, tactical analytics, and downstream Gold KPIs.'
+)
+
 AS
 
 SELECT

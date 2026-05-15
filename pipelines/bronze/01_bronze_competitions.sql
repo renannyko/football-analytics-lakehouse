@@ -32,6 +32,17 @@ CREATE OR REFRESH STREAMING TABLE raw_competitions
 
 COMMENT "Bronze streaming table containing raw StatsBomb competitions data ingested from JSON source files."
 
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'bronze',
+    'data_product' = 'raw_competitions',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'ingestion_type' = 'streaming',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Stores raw StatsBomb competition and season metadata for downstream standardization, lineage tracking, and analytical processing.'
+)
+
 AS
 
 SELECT
@@ -58,7 +69,7 @@ SELECT
     -- Technical metadata
     'statsbomb' AS source_system,
     'competitions' AS source_entity,
-    current_timestamp() AS ingestion_timestamp,
+    CURRENT_TIMESTAMP() AS ingestion_timestamp,
     _metadata.file_path AS source_file
 
 FROM STREAM read_files(

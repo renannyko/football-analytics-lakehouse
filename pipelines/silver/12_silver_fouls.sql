@@ -47,6 +47,17 @@ CREATE OR REFRESH STREAMING TABLE fouls
 
 COMMENT "Silver streaming table containing standardized StatsBomb foul-related events."
 
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'silver',
+    'data_product' = 'foul_events',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'ingestion_type' = 'streaming',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides standardized foul-related football events for disciplinary analysis, tactical foul modeling, defensive behavior analytics, and downstream Gold KPIs.'
+)
+
 AS
 
 SELECT

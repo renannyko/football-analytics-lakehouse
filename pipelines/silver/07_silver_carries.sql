@@ -51,6 +51,17 @@ CREATE OR REFRESH STREAMING TABLE carries
 
 COMMENT "Silver streaming table containing standardized StatsBomb carry events."
 
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'silver',
+    'data_product' = 'carry_events',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'ingestion_type' = 'streaming',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides standardized carry-level football events for ball progression analysis, offensive transition modeling, tactical analytics, and downstream Gold KPIs.'
+)
+
 AS
 
 SELECT

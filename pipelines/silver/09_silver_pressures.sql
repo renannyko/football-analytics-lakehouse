@@ -44,6 +44,17 @@ CREATE OR REFRESH STREAMING TABLE pressures
 
 COMMENT "Silver streaming table containing standardized StatsBomb pressure events."
 
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'silver',
+    'data_product' = 'pressure_events',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'ingestion_type' = 'streaming',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides standardized pressure-level football events for defensive tactical analysis, spatial pressure modeling, and downstream Gold KPIs.'
+)
+
 AS
 
 SELECT

@@ -32,6 +32,17 @@ CREATE OR REFRESH STREAMING TABLE raw_lineups
 
 COMMENT "Bronze streaming table containing raw StatsBomb lineup data for selected match files."
 
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'bronze',
+    'data_product' = 'raw_lineups',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'ingestion_type' = 'streaming',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Stores raw StatsBomb lineup data for downstream player standardization, lineup analysis, and analytical processing.'
+)
+
 AS
 
 SELECT

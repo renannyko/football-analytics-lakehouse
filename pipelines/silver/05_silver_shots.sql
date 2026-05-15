@@ -52,6 +52,17 @@ CREATE OR REFRESH STREAMING TABLE shots
 
 COMMENT "Silver streaming table containing standardized StatsBomb shot events."
 
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'silver',
+    'data_product' = 'shot_events',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'ingestion_type' = 'streaming',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides standardized shot-level football events for tactical analysis, xG modeling, spatial analytics, and downstream Gold KPIs.'
+)
+
 AS
 
 SELECT

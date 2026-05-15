@@ -57,6 +57,17 @@ CREATE OR REFRESH STREAMING TABLE events
 
 COMMENT "Silver streaming table containing standardized StatsBomb event-level data."
 
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'silver',
+    'data_product' = 'standardized_events',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'ingestion_type' = 'streaming',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides standardized football event-level data for downstream tactical analytics, event specialization, semantic modeling, and future machine learning workflows.'
+)
+
 AS
 
 SELECT
