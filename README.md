@@ -1,7 +1,7 @@
 # Football Analytics Lakehouse
 
 <p align="center">
-  <img src="docs/images/powerbi/dashboard-overview.png" width="100%">
+  <img src="docs/images/powerbi/dashboard_overview.png" width="100%">
 </p>
 
 <p align="center">
@@ -40,7 +40,7 @@ The platform was designed to achieve the following objectives:
 # High-Level Architecture
 
 <p align="center">
-  <img src="docs/images/architecture/pipeline-dag.png" width="90%">
+  <img src="docs/images/architecture/pipeline_dag.png" width="90%">
 </p>
 
 The platform follows a modern Medallion Architecture approach:
@@ -201,7 +201,7 @@ The Gold layer delivers analytical, tactical, semantic, and observability datase
 # Databricks Pipeline Architecture
 
 <p align="center">
-  <img src="docs/images/architecture/gold-pipeline-ui.png" width="100%">
+  <img src="docs/images/architecture/gold_pipeline.png" width="100%">
 </p>
 
 The platform uses:
@@ -219,7 +219,7 @@ The platform uses:
 # Governance Architecture
 
 <p align="center">
-  <img src="docs/images/databricks/unity-catalog-tags.png" width="100%">
+  <img src="docs/images/databricks/unity_catalog_tags.png" width="100%">
 </p>
 
 The platform implements enterprise-grade governance patterns using Unity Catalog.
@@ -317,7 +317,7 @@ The platform includes lightweight observability models directly inside the Lakeh
 # CI/CD Architecture
 
 <p align="center">
-  <img src="docs/images/github/github-actions.png" width="100%">
+  <img src="docs/images/github/github_actions.png" width="100%">
 </p>
 
 The platform uses GitHub Actions and Databricks Asset Bundles for deployment automation.
@@ -354,7 +354,7 @@ PROD Deployment
 # Production Deployment Approval Gate
 
 <p align="center">
-  <img src="docs/images/github/github-approval-gate.png" width="100%">
+  <img src="docs/images/github/github_approval_gate.png" width="100%">
 </p>
 
 The deployment architecture includes:
@@ -370,7 +370,7 @@ The deployment architecture includes:
 # Power BI Semantic Modeling
 
 <p align="center">
-  <img src="docs/images/semantic-model/semantic-model.png" width="100%">
+  <img src="docs/images/semantic-model/semantic_model.png" width="100%">
 </p>
 
 The Gold layer was intentionally designed for scalable semantic modeling inside Power BI.
@@ -405,7 +405,7 @@ The Gold layer was intentionally designed for scalable semantic modeling inside 
 ## Match Overview Analytics
 
 <p align="center">
-  <img src="docs/images/powerbi/dashboard-overview.png" width="100%">
+  <img src="docs/images/powerbi/dashboard_overview.png" width="100%">
 </p>
 
 Main dashboard capabilities:
@@ -422,7 +422,7 @@ Main dashboard capabilities:
 ## Tactical Analysis Visualization
 
 <p align="center">
-  <img src="docs/images/powerbi/tactical-analysis.png" width="100%">
+  <img src="docs/images/powerbi/tactical_analysis.png" width="100%">
 </p>
 
 Custom tactical visualization using event coordinates and time-window segmentation for advanced spatial analysis.
@@ -432,7 +432,7 @@ Custom tactical visualization using event coordinates and time-window segmentati
 ## Defensive Pressure Zone Analysis
 
 <p align="center">
-  <img src="docs/images/powerbi/pressure-zones.png" width="100%">
+  <img src="docs/images/powerbi/pressure_zones.png" width="100%">
 </p>
 
 Pressure zone analytics enable defensive intensity analysis and tactical positioning insights.
