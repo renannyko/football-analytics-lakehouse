@@ -1,31 +1,49 @@
-# Architecture Overview
+# Architecture
 
 ## Football Analytics Lakehouse
 
 ---
 
-# Executive Summary
+# Executive Architecture Vision
 
-The Football Analytics Lakehouse is a modern enterprise-style Lakehouse platform built on Databricks using Medallion Architecture, Delta Live Tables, Unity Catalog, CI/CD automation, and metadata-driven engineering principles.
+The Football Analytics Lakehouse was designed as a modern enterprise-style analytical platform built on Databricks using Lakehouse architecture principles, Medallion data modeling, declarative pipelines, metadata-driven engineering, and centralized governance.
 
-The platform was designed to simulate production-grade analytical engineering standards while enabling scalable football analytics, tactical reporting, observability, and future Machine Learning experimentation.
+The platform simulates real-world analytical engineering patterns commonly used in scalable enterprise data platforms while focusing on football analytics, tactical reporting, observability monitoring, and semantic analytical serving.
 
-Core platform capabilities include:
+The architecture combines:
 
-- Medallion Lakehouse architecture
-- Declarative data pipelines
-- Streaming ingestion pipelines
-- Centralized governance with Unity Catalog
-- Observability and monitoring datasets
-- Semantic analytical modeling
-- Feature engineering datasets
+- scalable ingestion pipelines
+- Medallion Architecture
+- Delta Live Tables
+- Unity Catalog governance
+- metadata-driven engineering
+- observability monitoring
+- semantic Power BI modeling
 - CI/CD deployment automation
-- Power BI analytical consumption
-- ML-ready data preparation
+- reusable analytical domains
+
+The project uses StatsBomb Open Data as its primary source system and was intentionally designed to emphasize enterprise engineering best practices instead of isolated notebook experimentation.
 
 ---
 
-# High-Level Architecture
+# Architectural Principles
+
+The platform architecture follows these principles:
+
+- declarative engineering
+- metadata-driven design
+- modular analytical domains
+- scalable Medallion Architecture
+- semantic consistency
+- governance-first engineering
+- observability-first architecture
+- reusable analytical modeling
+- CI/CD automation
+- environment isolation
+
+---
+
+# High-Level Platform Architecture
 
 ```text
 StatsBomb Open Data
@@ -34,341 +52,149 @@ StatsBomb Open Data
 Unity Catalog Volumes
         │
         ▼
-Bronze Streaming Tables
+Bronze Streaming Layer
         │
         ▼
-Silver Standardized Streaming Tables
+Silver Standardized Layer
         │
         ▼
-Gold Materialized Views
+Gold Analytical Serving Layer
         │
         ├── Power BI Dashboards
         ├── Tactical Analytics
-        ├── Executive Reporting
         ├── Observability Layer
-        └── Future ML Models
+        └── Future Advanced Analytics
 ```
 
 ---
 
-# Architectural Principles
-
-The platform architecture follows these core principles:
-
-- metadata-driven engineering
-- governance-first design
-- declarative data pipelines
-- scalable analytical modeling
-- reusable semantic datasets
-- modular transformation layers
-- CI/CD-managed deployments
-- observability-first operations
-- ML-ready feature engineering
+# Platform Architecture Layers
 
 ---
 
-# Technology Stack
+# 1. Source Layer
 
-| Component | Technology |
-|---|---|
-| Lakehouse Platform | Databricks |
-| Storage Layer | Delta Lake |
-| Governance Layer | Unity Catalog |
-| Pipeline Framework | Delta Live Tables |
-| Orchestration | Lakeflow Jobs |
-| CI/CD | GitHub Actions |
-| Infrastructure Deployment | Databricks Asset Bundles |
-| Source Control | GitHub |
-| Development Environment | VS Code |
-| BI Consumption | Power BI |
-| Primary Language | SQL |
-| Source Dataset | StatsBomb Open Data |
+## Source System
 
----
+The platform uses:
 
-# Data Source Architecture
+```text
+StatsBomb Open Data
+```
 
-The project uses StatsBomb Open Data as the primary source system.
+as the primary source system.
 
-Data categories include:
+## Source Characteristics
+
+The source dataset contains:
 
 - competitions
 - matches
 - lineups
 - event-level football actions
+- tactical event metadata
+- spatial event coordinates
 
-The source files are ingested as semi-structured JSON datasets into Unity Catalog Volumes.
+## Source Format
 
-Example ingestion structure:
+Source files are provided as:
+
+```text
+JSON
+```
+
+files stored inside Unity Catalog Volumes.
+
+---
+
+# 2. Storage Layer
+
+## Unity Catalog Volumes
+
+Raw source files are stored inside Unity Catalog Volumes.
+
+### Responsibilities
+
+- centralized storage
+- governance integration
+- secure file access
+- ingestion standardization
+- lineage enablement
+
+### Example Path
 
 ```text
 /Volumes/football_dev/bronze/raw_files/statsbomb/
-    ├── competitions/
-    ├── matches_43_106/
-    ├── lineups_*/
-    └── events_*/
 ```
 
 ---
 
-# Medallion Architecture
+# 3. Bronze Layer
 
-## Bronze Layer
+## Purpose
 
-### Purpose
+The Bronze layer preserves raw source fidelity and ingestion lineage.
 
-The Bronze layer acts as the raw ingestion layer.
-
-### Responsibilities
-
-- preserve source structure
-- maintain ingestion lineage
-- capture operational metadata
-- support replayability
-- minimize transformations
-
-### Characteristics
+## Architectural Characteristics
 
 - streaming ingestion
-- raw JSON ingestion
-- append-oriented architecture
-- source fidelity preservation
+- raw source preservation
+- minimal transformation
+- operational metadata enrichment
+- ingestion lineage tracking
 
-### Main Tables
+## Main Responsibilities
 
-| Table |
-|---|
-| raw_competitions |
-| raw_matches |
-| raw_lineups |
-| raw_events |
+- raw ingestion
+- source preservation
+- ingestion metadata
+- operational traceability
+
+## Main Tables
+
+- raw_competitions
+- raw_matches
+- raw_lineups
+- raw_events
+
+## Metadata Standards
+
+Bronze tables include:
+
+- table comments
+- TBLPROPERTIES
+- Unity Catalog TAGS
+- ingestion timestamps
+- source file lineage
 
 ---
 
-## Silver Layer
+# 4. Silver Layer
 
-### Purpose
+## Purpose
 
-The Silver layer standardizes and validates source data.
+The Silver layer standardizes and validates football event structures.
 
-### Responsibilities
+## Architectural Characteristics
 
-- normalize event structures
-- standardize semantics
-- enforce data quality
-- specialize football event domains
-- improve analytical usability
-
-### Characteristics
-
-- streaming transformations
-- DLT Expectations
+- streaming standardization
 - semantic normalization
+- data quality enforcement
+- event specialization
 - reusable analytical structures
 
-### Main Tables
+## Main Responsibilities
 
-| Table |
-|---|
-| events |
-| shots |
-| passes |
-| carries |
-| dribbles |
-| pressures |
-| duels |
-| fouls |
-| goalkeeper_actions |
-| substitutions |
-| event_related_events |
+- event normalization
+- semantic organization
+- data quality enforcement
+- analytical standardization
 
----
+## Data Quality Strategy
 
-## Gold Layer
+The Silver layer implements Delta Live Tables Expectations.
 
-### Purpose
-
-The Gold layer delivers analytical, tactical, semantic, and ML-oriented datasets.
-
-### Responsibilities
-
-- KPI generation
-- executive reporting
-- tactical analytical models
-- semantic dimensional modeling
-- observability monitoring
-- feature engineering
-
-### Characteristics
-
-- materialized views
-- BI-oriented serving layer
-- tactical analytical models
-- semantic dimensions
-- ML-ready datasets
-
----
-
-# Gold Analytical Domains
-
-## Match Analytics
-
-Examples:
-
-- match_summary
-- match_momentum
-- match_timeline
-
-Purpose:
-
-- executive reporting
-- match storytelling
-- tactical flow analysis
-
----
-
-## Team Analytics
-
-Examples:
-
-- team_match_stats
-- team_season_stats
-- team_offensive_metrics
-- team_defensive_metrics
-
-Purpose:
-
-- tactical analysis
-- season comparisons
-- KPI generation
-
----
-
-## Player Analytics
-
-Examples:
-
-- player_match_stats
-- player_season_stats
-- player_offensive_metrics
-- player_defensive_metrics
-
-Purpose:
-
-- scouting
-- player ranking
-- performance analysis
-
----
-
-## Spatial Analytics
-
-Examples:
-
-- shot_zones
-- pressure_zones
-- shot_events
-- pressure_events
-
-Purpose:
-
-- tactical heatmaps
-- spatial analysis
-- Power BI tactical dashboards
-
----
-
-## Tactical Sequence Analytics
-
-Examples:
-
-- passing_network
-- possession_sequences
-
-Purpose:
-
-- passing network analysis
-- possession modeling
-- tactical sequence visualization
-
----
-
-## Machine Learning Features
-
-Examples:
-
-- expected_goals_features
-- match_features_ml
-- player_features_ml
-
-Purpose:
-
-- feature engineering
-- future ML experimentation
-- predictive modeling preparation
-
----
-
-## Semantic Dimensions
-
-Examples:
-
-- dim_team
-- dim_player
-- dim_match
-- dim_match_time_window
-
-Purpose:
-
-- Power BI semantic modeling
-- star schema relationships
-- reusable filtering dimensions
-
----
-
-## Observability Layer
-
-Examples:
-
-- pipeline_table_metrics
-- pipeline_freshness_metrics
-- pipeline_quality_metrics
-- pipeline_execution_metrics
-
-Purpose:
-
-- monitoring
-- freshness validation
-- operational visibility
-- pipeline health tracking
-
----
-
-# Pipeline Architecture
-
-The platform uses Delta Live Tables declarative pipelines.
-
-Pipeline flow:
-
-```text
-Bronze Ingestion
-    │
-    ▼
-Silver Standardization
-    │
-    ▼
-Gold Analytical Serving
-```
-
-Pipeline orchestration is managed through Lakeflow Jobs and Databricks Asset Bundles.
-
----
-
-# Data Quality Architecture
-
-Data quality enforcement is implemented primarily in the Silver layer using DLT Expectations.
-
-Examples include:
+### Example
 
 ```sql
 CONSTRAINT valid_event_id EXPECT (
@@ -376,12 +202,177 @@ CONSTRAINT valid_event_id EXPECT (
 )
 ```
 
-Validation goals include:
+## Main Tables
 
-- schema reliability
-- identifier consistency
-- semantic normalization
-- downstream analytical integrity
+### Core Standardized Tables
+
+- competitions
+- matches
+- lineups
+- events
+
+### Specialized Event Tables
+
+- shots
+- passes
+- carries
+- dribbles
+- pressures
+- duels
+- fouls
+- goalkeeper_actions
+- substitutions
+- event_related_events
+
+---
+
+# 5. Gold Layer
+
+## Purpose
+
+The Gold layer delivers analytical, tactical, semantic, and observability datasets optimized for Power BI and advanced analytical consumption.
+
+## Architectural Characteristics
+
+- analytical serving layer
+- semantic-ready datasets
+- tactical analytical models
+- observability models
+- reusable KPIs
+- pre-aggregated analytics
+
+## Main Responsibilities
+
+- KPI generation
+- tactical analysis
+- semantic modeling
+- observability monitoring
+- analytical serving
+
+---
+
+# Gold Analytical Domains
+
+---
+
+## Match Analytics
+
+### Main Tables
+
+- match_summary
+- match_momentum
+- match_timeline
+
+### Main Capabilities
+
+- match-level KPIs
+- temporal analysis
+- momentum analysis
+- executive reporting
+
+---
+
+## Team Analytics
+
+### Main Tables
+
+- team_match_stats
+- team_season_stats
+- team_offensive_metrics
+- team_defensive_metrics
+
+### Main Capabilities
+
+- team performance analysis
+- offensive metrics
+- defensive metrics
+- tactical team comparisons
+
+---
+
+## Player Analytics
+
+### Main Tables
+
+- player_match_stats
+- player_season_stats
+- player_offensive_metrics
+- player_defensive_metrics
+
+### Main Capabilities
+
+- scouting analysis
+- player comparisons
+- offensive involvement
+- defensive involvement
+
+---
+
+## Spatial Analytics
+
+### Main Tables
+
+- shot_events
+- pressure_events
+- shot_zones
+- pressure_zones
+
+### Main Capabilities
+
+- shot maps
+- pressure heatmaps
+- tactical spatial analysis
+- density visualization
+
+---
+
+## Tactical Sequence Analytics
+
+### Main Tables
+
+- passing_network
+- possession_sequences
+
+### Main Capabilities
+
+- passing network visualization
+- possession flow analysis
+- tactical progression analysis
+
+---
+
+## Semantic Dimensions
+
+### Main Tables
+
+- dim_match
+- dim_team
+- dim_player
+- dim_match_time_window
+
+### Main Capabilities
+
+- semantic filtering
+- star-schema modeling
+- Power BI optimization
+
+---
+
+## Observability Models
+
+### Main Tables
+
+- pipeline_table_metrics
+- pipeline_freshness_metrics
+- pipeline_quality_metrics
+- pipeline_execution_metrics
+
+### Main Capabilities
+
+- row count monitoring
+- freshness validation
+- quality monitoring
+- execution health visibility
 
 ---
 
@@ -389,125 +380,45 @@ Validation goals include:
 
 The platform implements centralized governance using Unity Catalog.
 
-Governance capabilities include:
+## Governance Components
 
+- Unity Catalog
 - semantic comments
-- TBLPROPERTIES metadata
+- TBLPROPERTIES
 - Unity Catalog TAGS
 - metadata-driven discovery
 - lineage visibility
-- governance-as-code
 
-Governance metadata categories include:
+## Governance Strategy
 
-- ownership
-- analytical usage
-- layer classification
-- ML readiness
-- pipeline type
+Governance is implemented directly inside the pipeline definitions using:
+
+- declarative metadata
+- embedded governance standards
+- metadata-driven engineering
+
+## Metadata Categories
+
+### Technical Metadata
+
+- ingestion timestamps
+- source lineage
+- source system
+- source entity
+
+### Governance Metadata
+
+- data domain
+- data layer
+- owner team
 - data classification
+- refresh frequency
 
----
+### Semantic Metadata
 
-# CI/CD Architecture
-
-The platform uses GitHub Actions and Databricks Asset Bundles for deployment automation.
-
-Deployment flow:
-
-```text
-Developer Workstation
-    │
-    ▼
-GitHub Repository
-    │
-    ▼
-GitHub Actions
-    │
-    ▼
-Databricks Asset Bundles
-    │
-    ├── DEV Deployment
-    └── PROD Deployment
-```
-
----
-
-# Environment Strategy
-
-The platform follows environment isolation principles.
-
-Environments include:
-
-| Environment | Purpose |
-|---|---|
-| DEV | Development and testing |
-| PROD | Production analytical serving |
-
-Environment configuration is managed through Databricks Asset Bundles targets.
-
----
-
-# Semantic Modeling Strategy
-
-The Gold layer was designed to support Power BI semantic modeling.
-
-The semantic strategy includes:
-
-- reusable dimensions
-- analytical fact-style models
-- temporal filtering dimensions
-- tactical analytical datasets
-- KPI-oriented serving models
-
-The architecture supports:
-
-- star-schema modeling
-- dashboard performance optimization
-- reusable tactical filtering
-- executive analytical consumption
-
----
-
-# Observability and Monitoring
-
-The platform implements lightweight observability models directly inside the Lakehouse.
-
-Monitoring dimensions include:
-
-- row counts
-- freshness validation
-- quality checks
-- execution health
-
-This architecture enables future integration with:
-
-- dashboard alerting
-- operational monitoring
-- SLA tracking
-- platform health analytics
-
----
-
-# Machine Learning Readiness
-
-The architecture intentionally prepares analytical assets for future Databricks ML workflows.
-
-ML-oriented design patterns include:
-
-- feature-engineering datasets
-- event-level feature extraction
-- tactical numerical features
-- semantic feature consistency
-- reusable analytical transformations
-
-Potential future ML use cases include:
-
-- Expected Goals (xG)
-- player clustering
-- tactical similarity analysis
-- match outcome prediction
-- possession modeling
+- table comments
+- business descriptions
+- analytical purpose
 
 ---
 
@@ -515,52 +426,232 @@ Potential future ML use cases include:
 
 The platform heavily adopts metadata-driven engineering principles.
 
-Metadata implemented includes:
+## Implemented Metadata Standards
 
-- comments
-- TBLPROPERTIES
-- Unity Catalog TAGS
-- ingestion metadata
-- lineage metadata
-- semantic metadata
+### Table Comments
 
-This improves:
+```sql
+COMMENT "Gold analytical model containing tactical football metrics."
+```
 
+### TBLPROPERTIES
+
+```sql
+TBLPROPERTIES (
+    'data_domain' = 'football_analytics',
+    'data_layer' = 'gold',
+    'owner_team' = 'analytics_engineering'
+)
+```
+
+### Unity Catalog TAGS
+
+```sql
+SET TAGS (
+    'layer' = 'gold',
+    'consumption_type' = 'power_bi'
+)
+```
+
+---
+
+# Observability Architecture
+
+The platform implements lightweight observability directly inside the Lakehouse.
+
+## Monitoring Categories
+
+### Operational Monitoring
+
+- row counts
+- freshness validation
+- execution health
+
+### Data Quality Monitoring
+
+- null validations
+- quality ratios
+- semantic consistency
+
+### Pipeline Health Monitoring
+
+- execution visibility
+- freshness availability
+- table population validation
+
+## Observability Philosophy
+
+The observability layer was intentionally designed to remain lightweight while demonstrating enterprise-style monitoring patterns directly inside the Lakehouse.
+
+---
+
+# Power BI Semantic Architecture
+
+The Gold layer was intentionally designed for scalable semantic modeling inside Power BI.
+
+## Semantic Design Principles
+
+- reusable dimensions
+- star-schema orientation
+- semantic consistency
+- low-cardinality filtering
+- analytical scalability
+
+## Main Dimensions
+
+- dim_match
+- dim_team
+- dim_player
+- dim_match_time_window
+
+## Main Analytical Domains
+
+- executive analytics
+- tactical analytics
+- scouting analytics
+- spatial analytics
+- observability analytics
+
+---
+
+# CI/CD Architecture
+
+The platform uses GitHub Actions and Databricks Asset Bundles for deployment automation.
+
+## CI/CD Flow
+
+```text
+VS Code
+    ↓
+Git Commit
+    ↓
+Git Push
+    ↓
+GitHub Actions
+    ↓
+DEV Deployment
+    ↓
+Approval Gate
+    ↓
+PROD Deployment
+```
+
+## CI/CD Capabilities
+
+- automated validation
+- DEV deployment automation
+- PROD approval gates
+- reproducible deployments
+- environment isolation
+- governance-as-code
+
+## Environment Strategy
+
+### DEV Environment
+
+Used for:
+
+- active development
+- validation
+- testing
+- architecture refinement
+
+### PROD Environment
+
+Used for:
+
+- stable serving
+- production deployment
+- controlled promotion
+- approved releases
+
+---
+
+# Declarative Engineering Strategy
+
+The platform adopts declarative engineering patterns using:
+
+- Delta Live Tables
+- declarative SQL
+- Databricks Asset Bundles
+- metadata-driven configuration
+
+## Benefits
+
+- reproducibility
 - maintainability
-- discoverability
-- governance scalability
-- operational visibility
-- enterprise readiness
+- scalability
+- governance integration
+- simplified deployment automation
 
 ---
 
-# Future Architecture Enhancements
+# Repository Architecture
 
-Potential future improvements include:
-
-- real-time streaming ingestion
-- Databricks Feature Store
-- MLflow experimentation
-- advanced observability dashboards
-- automated SLA monitoring
-- Unity Catalog lineage dashboards
-- role-based security controls
-- CDC ingestion patterns
-- semantic metric layer
+```text
+football-analytics-lakehouse/
+│
+├── .github/
+│   └── workflows/
+│
+├── docs/
+│   ├── architecture.md
+│   ├── architecture-diagrams.md
+│   ├── governance.md
+│   └── powerbi-semantic-model.md
+│
+├── resources/
+│   ├── bronze_pipeline.yml
+│   ├── silver_pipeline.yml
+│   ├── gold_pipeline.yml
+│   └── orchestrator.job.yml
+│
+├── src/
+│   ├── bronze/
+│   ├── silver/
+│   ├── gold/
+│   └── ingestion/
+│
+├── databricks.yml
+│
+└── README.md
+```
 
 ---
 
-# Conclusion
+# Future Architectural Evolution
 
-The Football Analytics Lakehouse demonstrates a modern enterprise-style Databricks architecture combining:
+Potential future enhancements include:
+
+- real-time ingestion evolution
+- enhanced observability dashboards
+- automated alerting
+- advanced semantic metric layers
+- feature engineering expansion
+- advanced tactical dashboards
+- future advanced analytical experimentation
+
+---
+
+# Architectural Summary
+
+The Football Analytics Lakehouse demonstrates how modern Databricks technologies can be combined to build a scalable enterprise-style analytical platform using:
 
 - Medallion Architecture
 - Delta Live Tables
-- Unity Catalog governance
-- declarative pipelines
-- observability
-- semantic modeling
-- ML readiness
-- CI/CD automation
+- Unity Catalog Governance
+- Declarative SQL Pipelines
+- Metadata-Driven Engineering
+- CI/CD Automation
+- Tactical Football Analytics
+- Semantic Power BI Modeling
+- Lightweight Observability
 
-The platform was intentionally designed to simulate scalable production-grade analytical engineering patterns while enabling tactical football analytics and future Machine Learning experimentation.
+The architecture intentionally prioritizes:
+
+- modularity
+- governance
+- semantic consistency
+- analytical scalability
+- deployment automation
+- enterprise engineering practices

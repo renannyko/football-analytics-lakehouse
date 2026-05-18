@@ -1,257 +1,358 @@
-# Governance Strategy
+# Governance
 
 ## Football Analytics Lakehouse
 
 ---
 
-# Overview
+# Governance Overview
 
-The Football Analytics Lakehouse project implements a governance-first architecture using Databricks Unity Catalog, Delta Lake, and metadata-driven engineering principles.
+The Football Analytics Lakehouse implements enterprise-style governance patterns using Unity Catalog, metadata-driven engineering, declarative governance standards, and centralized semantic documentation.
 
-The governance strategy was designed to simulate enterprise-grade data platform standards, including:
+The governance architecture was designed to simulate real-world modern analytical platform governance practices while maintaining simplicity and scalability appropriate for a portfolio-oriented enterprise Lakehouse implementation.
 
-- semantic metadata management
-- centralized governance
-- data quality enforcement
-- observability
-- metadata-driven discovery
-- CI/CD-controlled governance-as-code
-- ML-ready analytical datasets
+The governance strategy combines:
 
-The platform follows a Medallion Architecture pattern using Bronze, Silver, and Gold layers.
+- Unity Catalog centralized governance
+- metadata-driven engineering
+- semantic documentation
+- governance-as-code
+- lineage visibility
+- analytical discoverability
+- standardized metadata structures
+- semantic analytical consistency
 
 ---
 
-# Governance Objectives
+# Governance Principles
 
-The primary governance objectives of this platform are:
+The platform governance model follows these principles:
 
-- standardize metadata across all analytical assets
-- improve data discoverability
-- enable semantic search and lineage exploration
-- enforce data quality rules
-- support observability and monitoring
-- prepare analytical datasets for downstream ML workloads
-- demonstrate modern Databricks governance patterns
+- centralized governance
+- metadata-first engineering
+- declarative governance standards
+- semantic consistency
+- discoverability
+- analytical transparency
+- lineage visibility
+- scalable governance patterns
+
+---
+
+# Governance Architecture
+
+```text
+Unity Catalog
+        │
+        ├── Catalog Governance
+        ├── Schema Governance
+        ├── Table Governance
+        ├── Metadata Governance
+        ├── Semantic Documentation
+        ├── Lineage Visibility
+        └── Tag-Based Discovery
+```
 
 ---
 
 # Unity Catalog Governance
 
-Unity Catalog acts as the centralized governance layer for the platform.
+Unity Catalog serves as the centralized governance layer for the platform.
 
-Governance capabilities implemented include:
+## Governance Responsibilities
 
-- table and materialized view comments
-- TBLPROPERTIES metadata
-- Unity Catalog TAGS
+- centralized metadata management
+- access governance
 - lineage tracking
-- centralized object discovery
-- schema organization by Medallion layer
+- semantic discoverability
+- table organization
+- metadata standardization
 
 ---
 
-# Medallion Governance Layers
+# Catalog Structure
 
-## Bronze Layer
+The platform currently organizes environments using catalog-level separation.
 
-The Bronze layer is responsible for raw ingestion and source preservation.
+## Main Catalogs
 
-Characteristics:
+### Development Environment
 
-- minimally transformed source data
-- ingestion-focused pipelines
-- raw lineage preservation
-- operational metadata enrichment
-- immutable ingestion behavior
+```text
+football_dev
+```
 
-Examples:
+### Production Environment
 
-- raw_events
-- raw_matches
-- raw_lineups
-- raw_competitions
-
-Typical Governance Tags:
-
-```sql
-layer = bronze
-pipeline_type = streaming_ingestion
-consumption_type = engineering
-ml_ready = false
+```text
+football_prod
 ```
 
 ---
 
-## Silver Layer
+# Schema Organization
 
-The Silver layer is responsible for standardization, validation, and normalization.
+Each environment follows Medallion Architecture separation.
 
-Characteristics:
+## Bronze Schema
 
-- semantic organization
-- standardized event models
+### Purpose
+
+Raw ingestion and source preservation.
+
+### Characteristics
+
+- streaming ingestion
+- operational metadata
+- minimal transformations
+- ingestion lineage
+
+---
+
+## Silver Schema
+
+### Purpose
+
+Standardized and validated analytical structures.
+
+### Characteristics
+
+- semantic normalization
+- data quality enforcement
 - event specialization
-- quality constraints
 - reusable analytical structures
 
-Examples:
-
-- events
-- shots
-- passes
-- pressures
-- carries
-- dribbles
-
-Typical Governance Tags:
-
-```sql
-layer = silver
-pipeline_type = streaming_transformation
-consumption_type = analytics
-ml_ready = partial
-```
-
 ---
 
-## Gold Layer
+## Gold Schema
 
-The Gold layer is responsible for serving analytical datasets optimized for BI, tactical analysis, and future ML workloads.
+### Purpose
 
-Characteristics:
+Analytical serving and semantic consumption.
 
-- KPI-oriented models
-- tactical analytical models
+### Characteristics
+
+- tactical analytics
+- KPI generation
 - semantic dimensions
-- observability datasets
-- feature engineering datasets
-- executive reporting datasets
-
-Examples:
-
-- match_summary
-- shot_events
-- match_momentum
-- player_features_ml
-- pipeline_execution_metrics
-
-Typical Governance Tags:
-
-```sql
-layer = gold
-pipeline_type = serving_layer
-consumption_type = power_bi
-ml_ready = true
-```
+- observability models
+- Power BI serving
 
 ---
 
-# Comments and Semantic Documentation
+# Metadata-Driven Engineering
 
-All major analytical assets implement semantic comments using:
+The platform heavily adopts metadata-driven engineering principles.
 
-```sql
-COMMENT
-```
+Governance metadata is embedded directly into the pipeline definitions instead of being managed separately.
 
-or:
+This approach enables:
 
-```sql
-COMMENT ON TABLE
-```
-
-These comments improve:
-
-- Catalog Explorer discoverability
-- semantic understanding
-- onboarding experience
-- lineage readability
-- business context visibility
-
-Each pipeline includes:
-
-- business description
-- architecture description
-- source information
-- analytical purpose
-- downstream usage
+- governance-as-code
+- reproducible governance
+- semantic consistency
+- scalable metadata management
+- automated discoverability
 
 ---
 
-# TBLPROPERTIES Metadata Strategy
+# Governance Metadata Standards
 
-The platform uses TBLPROPERTIES as technical governance metadata.
+The platform implements three major metadata categories:
 
-This enables metadata-driven engineering and governance-as-code patterns.
-
-Standardized properties include:
-
-| Property | Purpose |
+| Metadata Category | Purpose |
 |---|---|
-| data_domain | Business domain ownership |
-| data_layer | Medallion architecture layer |
+| Comments | Semantic documentation |
+| TBLPROPERTIES | Governance and operational metadata |
+| TAGS | Discovery and classification |
+
+---
+
+# Table Comments
+
+Semantic comments are implemented across Bronze, Silver, and Gold layers.
+
+## Purpose
+
+Comments provide:
+
+- analytical descriptions
+- semantic clarity
+- catalog discoverability
+- business context
+- engineering documentation
+
+## Example
+
+```sql
+COMMENT "Gold analytical model containing player-level offensive KPIs."
+```
+
+---
+
+# TBLPROPERTIES Governance
+
+TBLPROPERTIES are used to implement structured governance metadata.
+
+## Purpose
+
+TBLPROPERTIES provide:
+
+- governance standardization
+- metadata-driven filtering
+- ownership visibility
+- operational metadata
+- architectural classification
+
+---
+
+# Standard Governance Properties
+
+The platform standardizes the following properties:
+
+| Property | Description |
+|---|---|
+| data_domain | Business or analytical domain |
+| data_layer | Medallion layer |
 | data_product | Logical analytical product |
 | owner_team | Responsible engineering team |
 | data_classification | Data sensitivity classification |
-| refresh_frequency | Pipeline refresh behavior |
-| business_purpose | Business and analytical usage |
-| ingestion_type | Streaming or batch ingestion |
+| refresh_frequency | Update cadence |
+| business_purpose | Semantic analytical purpose |
 
-Example:
+---
+
+# Example
 
 ```sql
 TBLPROPERTIES (
     'data_domain' = 'football_analytics',
     'data_layer' = 'gold',
-    'owner_team' = 'analytics_engineering'
+    'data_product' = 'player_offensive_analytics',
+    'owner_team' = 'analytics_engineering',
+    'data_classification' = 'public',
+    'refresh_frequency' = 'on_pipeline_run',
+    'business_purpose' = 'Provides player-level offensive KPIs for tactical and scouting analysis.'
 )
 ```
 
 ---
 
-# Unity Catalog TAGS Strategy
+# Unity Catalog TAGS
 
-Unity Catalog TAGS are used for semantic classification and asset discovery.
+Unity Catalog TAGS are used for semantic discovery and governance classification.
 
-Tags improve:
+## Purpose
 
-- governance searchability
+TAGS enable:
+
 - semantic filtering
+- governance classification
+- metadata discoverability
 - catalog organization
-- analytical classification
-- ML asset discovery
+- analytical grouping
 
-Standardized governance tags include:
+---
 
-| Tag | Purpose |
+# Standard Governance TAGS
+
+| TAG | Purpose |
 |---|---|
-| layer | Bronze/Silver/Gold |
-| domain | Business domain |
+| layer | Medallion layer |
+| domain | Analytical domain |
 | source | Source system |
-| owner_team | Responsible team |
-| pipeline_type | Engineering workflow type |
-| consumption_type | BI, ML, monitoring, etc |
-| analytics_use_case | Tactical or business usage |
-| ml_ready | ML readiness indicator |
+| consumption_type | Main consumption layer |
+| pipeline_type | Streaming or batch |
+| refresh_mode | Pipeline execution behavior |
+| business_criticality | Importance classification |
 
-Example:
+---
+
+# Example
 
 ```sql
 SET TAGS (
     'layer' = 'gold',
+    'domain' = 'football_analytics',
     'consumption_type' = 'power_bi',
-    'ml_ready' = 'true'
+    'business_criticality' = 'high'
 )
 ```
 
 ---
 
-# Data Quality Strategy
+# Governance by Medallion Layer
 
-The Silver layer implements data quality enforcement using Delta Live Tables Expectations.
+---
 
-Examples include:
+# Bronze Governance
+
+## Governance Objectives
+
+- preserve raw source fidelity
+- maintain ingestion lineage
+- provide operational traceability
+- support downstream reproducibility
+
+## Metadata Focus
+
+- source lineage
+- ingestion timestamps
+- source files
+- ingestion operational metadata
+
+---
+
+# Silver Governance
+
+## Governance Objectives
+
+- semantic standardization
+- data quality enforcement
+- event normalization
+- analytical consistency
+
+## Metadata Focus
+
+- semantic clarity
+- quality enforcement
+- standardized analytical naming
+- reusable event structures
+
+---
+
+# Gold Governance
+
+## Governance Objectives
+
+- semantic serving
+- tactical analytical consistency
+- KPI standardization
+- Power BI optimization
+- observability integration
+
+## Metadata Focus
+
+- business semantics
+- tactical analytical purpose
+- semantic discoverability
+- analytical serving metadata
+
+---
+
+# Data Quality Governance
+
+The Silver layer implements Delta Live Tables Expectations.
+
+## Quality Objectives
+
+- schema reliability
+- semantic consistency
+- analytical integrity
+- downstream reliability
+
+---
+
+# Example
 
 ```sql
 CONSTRAINT valid_event_id EXPECT (
@@ -259,141 +360,183 @@ CONSTRAINT valid_event_id EXPECT (
 )
 ```
 
-Quality enforcement goals:
+---
 
-- reject invalid records
-- standardize critical identifiers
-- improve downstream reliability
-- reduce analytical inconsistencies
+# Governance-As-Code Strategy
 
-The project intentionally separates:
+The platform adopts governance-as-code principles.
 
-- ingestion quality
-- transformation quality
-- analytical quality
+Governance definitions are versioned directly inside the repository and embedded into pipeline definitions.
+
+## Benefits
+
+- reproducibility
+- version-controlled governance
+- standardized deployments
+- simplified governance management
+- automated governance propagation
 
 ---
 
-# Observability Architecture
+# CI/CD Governance Integration
 
-The platform implements lightweight observability datasets in the Gold layer.
+Governance metadata propagates automatically through CI/CD deployment flows.
 
-Implemented monitoring datasets include:
-
-| Dataset | Purpose |
-|---|---|
-| pipeline_table_metrics | Row count monitoring |
-| pipeline_freshness_metrics | Freshness monitoring |
-| pipeline_quality_metrics | Data quality monitoring |
-| pipeline_execution_metrics | Execution health visibility |
-
-These datasets support:
-
-- operational monitoring
-- pipeline health visibility
-- dashboard observability
-- future alerting integrations
-
----
-
-# ML Readiness Strategy
-
-The platform includes dedicated feature-engineering datasets optimized for future Databricks ML experimentation.
-
-Examples:
-
-- expected_goals_features
-- match_features_ml
-- player_features_ml
-
-Governance tags explicitly identify ML-capable datasets:
-
-```sql
-ml_ready = true
-```
-
-This enables:
-
-- feature discoverability
-- future ML governance
-- downstream experimentation
-- scalable feature engineering
-
----
-
-# CI/CD Governance-as-Code
-
-Governance changes are version-controlled and deployed through GitHub-based CI/CD workflows.
-
-Governance artifacts managed as code include:
-
-- pipeline SQL definitions
-- comments
-- TBLPROPERTIES
-- TAGS
-- quality constraints
-- observability models
-
-Deployment flow:
+## Deployment Flow
 
 ```text
 Local Development
-    -> GitHub Repository
-    -> GitHub Actions
-    -> Databricks Asset Bundles
-    -> DEV Environment
-    -> PROD Environment
+        ↓
+Git Commit
+        ↓
+GitHub Actions
+        ↓
+Databricks Asset Bundles
+        ↓
+DEV Deployment
+        ↓
+Approval Gate
+        ↓
+PROD Deployment
 ```
 
-This architecture enables:
+## Governance Propagation
 
-- controlled governance evolution
-- reproducible deployments
-- auditability
-- environment consistency
-- scalable platform operations
+The deployment process automatically propagates:
+
+- comments
+- TBLPROPERTIES
+- TAGS
+- semantic metadata
+- governance standards
 
 ---
 
-# Governance Design Principles
+# Lineage Strategy
 
-The platform governance model follows these principles:
+Unity Catalog lineage capabilities provide visibility across:
 
-- governance-first engineering
-- metadata-driven architecture
+- ingestion pipelines
+- Medallion transformations
+- Gold analytical models
+- semantic serving datasets
+
+## Lineage Benefits
+
+- traceability
+- impact analysis
+- semantic visibility
+- downstream dependency tracking
+
+---
+
+# Semantic Discoverability
+
+The governance strategy prioritizes semantic discoverability.
+
+## Discoverability Mechanisms
+
+- comments
+- semantic naming conventions
+- TAGS
+- TBLPROPERTIES
+- analytical domain grouping
+
+---
+
+# Observability Governance
+
+The platform also governs observability datasets.
+
+## Observability Models
+
+- pipeline_table_metrics
+- pipeline_freshness_metrics
+- pipeline_quality_metrics
+- pipeline_execution_metrics
+
+## Governance Goals
+
+- operational transparency
+- execution visibility
+- monitoring standardization
+- analytical observability
+
+---
+
+# Security and Classification
+
+The current platform uses public football datasets.
+
+## Current Classification
+
+```text
+public
+```
+
+## Future Governance Extensions
+
+Potential future enhancements include:
+
+- row-level security
+- column masking
+- role-based access control
+- sensitive analytical segmentation
+
+---
+
+# Governance Documentation Strategy
+
+Governance documentation is intentionally separated into:
+
+| Document | Purpose |
+|---|---|
+| README.md | Executive overview |
+| architecture.md | Technical architecture |
+| governance.md | Governance standards |
+| powerbi-semantic-model.md | Semantic serving |
+| architecture-diagrams.md | Visual architecture |
+
+---
+
+# Governance Philosophy
+
+The governance architecture was intentionally designed to simulate enterprise governance patterns while remaining:
+
+- scalable
+- maintainable
+- metadata-driven
+- semantically organized
+- operationally lightweight
+
+The project prioritizes governance integration directly into engineering workflows instead of external governance dependency management.
+
+---
+
+# Future Governance Evolution
+
+Potential future enhancements include:
+
+- automated governance validation
+- governance policy enforcement
+- advanced metadata lineage
+- semantic metric governance
+- automated data quality scoring
+- governance observability dashboards
+
+---
+
+# Governance Summary
+
+The Football Analytics Lakehouse governance architecture demonstrates how modern Databricks governance capabilities can be combined with metadata-driven engineering practices to build a scalable enterprise-style analytical platform.
+
+The governance strategy combines:
+
+- Unity Catalog governance
+- metadata-driven engineering
+- governance-as-code
 - semantic discoverability
-- reusable analytical modeling
-- scalable observability
-- ML readiness
-- CI/CD-controlled governance
-- enterprise-grade documentation standards
-
----
-
-# Future Governance Enhancements
-
-Potential future improvements include:
-
-- Unity Catalog lineage dashboards
-- automated quality alerting
-- data contracts
-- schema evolution policies
-- role-based access controls
-- feature store integration
-- centralized monitoring dashboards
-- automated metadata scanning
-
----
-
-# Conclusion
-
-The Football Analytics Lakehouse governance architecture demonstrates how modern Databricks platforms can implement enterprise-grade governance patterns using:
-
-- Unity Catalog
-- Delta Live Tables
-- Metadata-driven engineering
-- Governance-as-code
-- Observability models
-- ML-ready analytical design
-
-This governance strategy transforms the project from a simple analytical pipeline into a modern, scalable, and enterprise-oriented Lakehouse platform.
+- declarative governance standards
+- CI/CD governance propagation
+- analytical consistency
+- lineage visibility
