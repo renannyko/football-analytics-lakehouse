@@ -1,30 +1,28 @@
 # Football Analytics Lakehouse
 
-## Enterprise-Style Football Analytics Platform on Databricks
+<p align="center">
+  <img src="docs/images/powerbi/dashboard-overview.png" width="100%">
+</p>
+
+<p align="center">
+  Enterprise-Style Football Analytics Platform built with Databricks Lakehouse, Delta Live Tables, Unity Catalog, CI/CD, and Power BI Semantic Modeling.
+</p>
 
 ---
 
-# Overview
+# Executive Overview
 
-The Football Analytics Lakehouse is a modern enterprise-style analytical platform built on Databricks using Medallion Architecture, Delta Live Tables, Unity Catalog, Databricks Asset Bundles, and GitHub Actions CI/CD.
+The Football Analytics Lakehouse is a modern enterprise-style analytical platform built on Databricks using Lakehouse architecture principles, Medallion data modeling, declarative pipelines, metadata-driven engineering, and centralized governance.
 
-The platform was designed to simulate real-world data engineering and analytical architecture patterns while enabling scalable football analytics, tactical reporting, observability monitoring, semantic modeling, and future advanced analytical experimentation.
+The platform simulates real-world analytical engineering patterns commonly used in scalable enterprise data platforms while focusing on football analytics, tactical reporting, observability monitoring, semantic analytical serving, and future advanced analytics evolution.
 
-The project uses StatsBomb Open Data as its primary source system and follows modern enterprise data engineering practices including:
-
-- declarative pipelines
-- metadata-driven engineering
-- governance-as-code
-- observability monitoring
-- semantic analytical modeling
-- CI/CD deployment automation
-- reusable analytical datasets
+The project uses StatsBomb Open Data as its primary source system and was intentionally designed to emphasize enterprise engineering best practices instead of isolated notebook experimentation.
 
 ---
 
 # Project Goals
 
-The project was designed to achieve the following objectives:
+The platform was designed to achieve the following objectives:
 
 - simulate a real-world enterprise Lakehouse platform
 - implement scalable Medallion Architecture patterns
@@ -35,11 +33,17 @@ The project was designed to achieve the following objectives:
 - implement observability and monitoring patterns
 - create Power BI semantic-ready datasets
 - demonstrate CI/CD deployment automation
-- prepare the platform for future advanced analytics evolution
+- prepare the platform for future advanced analytical evolution
 
 ---
 
 # High-Level Architecture
+
+<p align="center">
+  <img src="docs/images/architecture/pipeline-dag.png" width="90%">
+</p>
+
+The platform follows a modern Medallion Architecture approach:
 
 ```text
 StatsBomb Open Data
@@ -54,7 +58,7 @@ Bronze Streaming Tables
 Silver Standardized Streaming Tables
         │
         ▼
-Gold Materialized Views
+Gold Analytical Serving Layer
         │
         ├── Power BI Dashboards
         ├── Tactical Analytics
@@ -194,7 +198,29 @@ The Gold layer delivers analytical, tactical, semantic, and observability datase
 
 ---
 
+# Databricks Pipeline Architecture
+
+<p align="center">
+  <img src="docs/images/architecture/gold-pipeline-ui.png" width="100%">
+</p>
+
+The platform uses:
+
+- Delta Live Tables (DLT)
+- Streaming Tables
+- Materialized Views
+- Declarative SQL Pipelines
+- Databricks Asset Bundles (DABs)
+- Unity Catalog Governance
+- Serverless Compute
+
+---
+
 # Governance Architecture
+
+<p align="center">
+  <img src="docs/images/databricks/unity-catalog-tags.png" width="100%">
+</p>
 
 The platform implements enterprise-grade governance patterns using Unity Catalog.
 
@@ -264,7 +290,11 @@ CONSTRAINT valid_event_id EXPECT (
 
 ---
 
-# Observability Architecture
+# Data Lineage and Observability
+
+<p align="center">
+  <img src="docs/images/architecture/lineage.png" width="100%">
+</p>
 
 The platform includes lightweight observability models directly inside the Lakehouse.
 
@@ -284,42 +314,11 @@ The platform includes lightweight observability models directly inside the Lakeh
 
 ---
 
-# Power BI Semantic Modeling
-
-The Gold layer was intentionally designed for scalable Power BI semantic modeling.
-
-## Semantic Dimensions
-
-- dim_match
-- dim_team
-- dim_player
-- dim_match_time_window
-
-## Main Consumption Domains
-
-- executive dashboards
-- tactical analysis
-- scouting analysis
-- spatial event visualization
-- observability monitoring
-
----
-
-# Tactical Football Analytics
-
-The platform includes advanced football analytical models including:
-
-- passing networks
-- possession sequences
-- pressure zones
-- shot zones
-- momentum analysis
-- offensive intensity indicators
-- defensive intensity indicators
-
----
-
 # CI/CD Architecture
+
+<p align="center">
+  <img src="docs/images/github/github-actions.png" width="100%">
+</p>
 
 The platform uses GitHub Actions and Databricks Asset Bundles for deployment automation.
 
@@ -352,6 +351,125 @@ PROD Deployment
 
 ---
 
+# Production Deployment Approval Gate
+
+<p align="center">
+  <img src="docs/images/github/github-approval-gate.png" width="100%">
+</p>
+
+The deployment architecture includes:
+
+- controlled production promotion
+- manual approval workflows
+- isolated environments
+- deployment validation
+- reproducible infrastructure deployment
+
+---
+
+# Power BI Semantic Modeling
+
+<p align="center">
+  <img src="docs/images/semantic-model/semantic-model.png" width="100%">
+</p>
+
+The Gold layer was intentionally designed for scalable semantic modeling inside Power BI.
+
+## Semantic Design Principles
+
+- reusable dimensions
+- star-schema orientation
+- semantic consistency
+- analytical scalability
+- tactical slicing capabilities
+
+## Main Dimensions
+
+- dim_match
+- dim_team
+- dim_player
+- dim_match_time_window
+
+## Main Consumption Domains
+
+- executive dashboards
+- tactical analysis
+- scouting analysis
+- spatial analytics
+- observability analytics
+
+---
+
+# Dashboard Showcase
+
+## Match Overview Analytics
+
+<p align="center">
+  <img src="docs/images/powerbi/dashboard-overview.png" width="100%">
+</p>
+
+Main dashboard capabilities:
+
+- match momentum tracking
+- possession analysis
+- team comparison
+- tactical metrics
+- player contribution analytics
+- match event KPIs
+
+---
+
+## Tactical Analysis Visualization
+
+<p align="center">
+  <img src="docs/images/powerbi/tactical-analysis.png" width="100%">
+</p>
+
+Custom tactical visualization using event coordinates and time-window segmentation for advanced spatial analysis.
+
+---
+
+## Defensive Pressure Zone Analysis
+
+<p align="center">
+  <img src="docs/images/powerbi/pressure-zones.png" width="100%">
+</p>
+
+Pressure zone analytics enable defensive intensity analysis and tactical positioning insights.
+
+---
+
+# Tactical Football Analytics
+
+The platform includes advanced football analytical models including:
+
+- passing networks
+- possession sequences
+- pressure zones
+- shot zones
+- momentum analysis
+- offensive intensity indicators
+- defensive intensity indicators
+
+---
+
+# Gold Analytical Models
+
+The Gold layer includes specialized analytical models such as:
+
+| Model | Description |
+|---|---|
+| match_summary | Match-level KPIs |
+| match_momentum | Time-window momentum analysis |
+| pressure_zones | Defensive pressure spatial analysis |
+| passing_network | Team passing interaction analysis |
+| player_match_stats | Player-level match performance |
+| player_season_stats | Season aggregated player metrics |
+| shot_events | Shot analytics |
+| team_match_stats | Team performance KPIs |
+
+---
+
 # Repository Structure
 
 ```text
@@ -364,7 +482,8 @@ football-analytics-lakehouse/
 │   ├── architecture.md
 │   ├── architecture-diagrams.md
 │   ├── governance.md
-│   └── powerbi-semantic-model.md
+│   ├── powerbi-semantic-model.md
+│   └── images/
 │
 ├── resources/
 │   ├── bronze_pipeline.yml
@@ -385,6 +504,25 @@ football-analytics-lakehouse/
 
 ---
 
+# Key Engineering Concepts
+
+This project demonstrates practical implementation of:
+
+- Medallion Architecture
+- Streaming Data Engineering
+- Declarative Pipelines
+- Data Governance
+- CI/CD for Data Platforms
+- Semantic Modeling
+- Tactical Sports Analytics
+- Metadata Management
+- Data Lineage
+- Enterprise Data Architecture
+- Analytics Engineering
+- Lakehouse Design Patterns
+
+---
+
 # Architecture Documentation
 
 Detailed documentation is available in:
@@ -398,44 +536,18 @@ Detailed documentation is available in:
 
 ---
 
-# Key Engineering Features
-
-## Declarative Pipelines
-
-Pipelines are implemented using Delta Live Tables and declarative SQL transformations.
-
----
-
-## Metadata-Driven Design
-
-The platform heavily leverages metadata for governance, lineage, discoverability, and semantic clarity.
-
----
-
-## Enterprise Observability
-
-The platform implements lightweight observability patterns directly inside the Lakehouse.
-
----
-
-## Tactical Analytics
-
-The Gold layer was designed to support tactical football analytics and spatial event analysis.
-
----
-
-# Future Roadmap
+# Future Enhancements
 
 Potential future enhancements include:
 
-- advanced tactical dashboards
-- enhanced observability dashboards
-- automated alerting
-- semantic metric layers
-- advanced Power BI KPI libraries
-- feature engineering expansion
-- future advanced analytical experimentation
-- real-time ingestion evolution
+- Machine Learning feature engineering
+- Expected Goals (xG) modeling
+- Real-time streaming ingestion
+- Lakehouse Monitoring integration
+- Data Quality dashboards
+- Automated data observability
+- Feature Store integration
+- Advanced tactical clustering models
 
 ---
 
@@ -455,21 +567,18 @@ This project was intentionally designed to simulate real-world modern data platf
 
 # Conclusion
 
-The Football Analytics Lakehouse demonstrates how modern Databricks technologies can be combined to build a scalable, enterprise-style analytical platform using:
+This project demonstrates how modern enterprise data engineering practices can be applied to sports analytics using the Databricks Lakehouse Platform.
 
-- Medallion Architecture
-- Delta Live Tables
-- Unity Catalog Governance
-- Declarative SQL Pipelines
-- Metadata-Driven Engineering
-- CI/CD Automation
-- Tactical Football Analytics
-- Power BI Semantic Modeling
+The platform combines:
 
-The platform serves both as:
+- scalable data architecture
+- governance
+- streaming pipelines
+- CI/CD
+- semantic modeling
+- analytical storytelling
 
-- a football analytics solution
-- a real-world modern data engineering portfolio project
+into a fully integrated analytics solution.
 
 ---
 
@@ -477,8 +586,8 @@ The platform serves both as:
 
 Renan Vitor Nyko
 
-LinkedIn:
-[https://www.linkedin.com/in/renannyko/](https://www.linkedin.com/in/renannyko/)
+LinkedIn:  
+https://www.linkedin.com/in/renannyko/
 
-GitHub:
-[https://github.com/renannyko](https://github.com/renannyko)
+GitHub:  
+https://github.com/renannyko
