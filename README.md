@@ -1,6 +1,14 @@
 # Football Analytics Lakehouse
 
 <p align="center">
+  <img src="https://img.shields.io/badge/Databricks-Lakehouse-FF3621?style=for-the-badge&logo=databricks&logoColor=white" />
+  <img src="https://img.shields.io/badge/Delta%20Lake-Storage-00ADD8?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Unity%20Catalog-Governance-6F42C1?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/GitHub%20Actions-CI%2FCD-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" />
+  <img src="https://img.shields.io/badge/Power%20BI-Semantic%20Model-F2C811?style=for-the-badge&logo=powerbi&logoColor=black" />
+</p>
+
+<p align="center">
   <img src="docs/images/powerbi/dashboard_overview.png" width="100%">
 </p>
 
